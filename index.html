@@ -236,8 +236,8 @@
     <div class="titleblock-main">
       <div>
         <div class="eyebrow">Structural Verification Dossier</div>
-        <h1>echo43hd — 構造検証レポート</h1>
-        <div class="sub">3敷地(west / southeast / north)・生物形態トポロジー最適化タワー — 採用済み最終デザイン</div>
+        <h1><span class="term" tabindex="0" data-def="このプロジェクトの試行シリーズ名(echo)の43番目のバリエーションを、HD(高解像度: 要素サイズ2.0m・反復70回)で再計算したもの、という命名。100パターン以上の反復試行の中から選ばれた候補。詳しくはQ&AのQ10参照。">echo43hd</span> — 構造検証レポート</h1>
+        <div class="sub">3敷地(west / southeast / north)・<span class="term" tabindex="0" data-def="生物形態(biomorphic)＝生物の骨や殻のような有機的な形をした建築デザイン。単なる装飾ではなく、下の「トポロジー最適化」の計算結果として自然に生まれた形という意味を込めている。">生物形態</span><span class="term" tabindex="0" data-def="Topology Optimization。あらかじめ形を決めるのではなく、「この範囲・この荷重条件でどこに材料を残すのが最も効率的か」を計算機に解かせ、結果として形そのものを導き出す設計手法。このプロジェクトではSIMPという手法を使用。">トポロジー最適化</span>タワー — 採用済み最終デザイン</div>
       </div>
       <div class="status-chip">STATUS: 3棟連結OK・応力健全域・採用確定</div>
     </div>
@@ -298,8 +298,8 @@
   </section>
 
   <section>
-    <div class="section-head"><span class="idx">02</span><h2>接地・連結性（rebin_box）</h2></div>
-    <p class="section-note"><span class="term" tabindex="0" data-def="密度データ(0〜1の連続値)を「0.5以上なら固体、未満なら空」で白黒はっきり分けること。この閾値をどこに引くかで形が確定する。">二値化</span>(閾値0.5)後、接地成分から最上段まで到達しているかを検証。浮遊断片は clean_floating で除去済み。</p>
+    <div class="section-head"><span class="idx">02</span><h2><span class="term" tabindex="0" data-def="「地面に足がついている」ということ。宙に浮いた塊(地面と繋がっていない材料)は建物として成立しないため、必ず地面から連続して繋がっているかを確認する。">接地</span>・連結性（rebin_box）</h2></div>
+    <p class="section-note">解析空間は一辺<span class="term" tabindex="0" data-def="トポロジー最適化の計算・出力の最小単位となる立方体1マス。echo43hdでは1セル=2.0m四方(要素サイズ)の箱。「○○セル」という数字は、その箱がいくつ並んでいるかを表す。">セル</span>と呼ぶ立方体マスの集合として計算されており、<span class="term" tabindex="0" data-def="密度データ(0〜1の連続値)を「0.5以上なら固体、未満なら空」で白黒はっきり分けること。この閾値をどこに引くかで形が確定する。">二値化</span>(閾値0.5)後、接地成分から最上段まで到達しているかを検証。浮遊断片は clean_floating で除去済み。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>棟</th><th class="num term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない。">連結率</th><th class="num term" tabindex="0" data-def="地面と繋がっていない孤立した塊も含めた、独立したかたまりの総数。1つの棟が本来1個の塊のはずが、複数に割れて出力されるとここが増える。">成分数</th><th class="num term" tabindex="0" data-def="地面に接地していない、宙に浮いた孤立断片として自動的に取り除かれたセルの数。">浮遊除去</th><th class="num">清掃後 solid</th><th>最上段到達</th></tr></thead>
@@ -469,13 +469,13 @@
     <div class="stat-row">
       <div class="stat-card"><div class="label term" tabindex="0" data-def="繋がった一塊として数えたメッシュのかたまりの数。3棟あるので理想は3。4以上あれば、どこかの棟が分裂して出力されている可能性がある。">成分数</div><div class="big">3</div><div class="sub">west / southeast / north の3棟のみ</div></div>
       <div class="stat-card"><div class="label">断片</div><div class="big">0</div><div class="sub">浮遊メッシュなし</div></div>
-      <div class="stat-card"><div class="label">頂点数</div><div class="big" style="font-size:20px; margin-top:12px;">22,380 / 22,170 / 21,917</div><div class="sub">各成分の頂点数</div></div>
+      <div class="stat-card"><div class="label term" tabindex="0" data-def="出力された3Dメッシュ(表面形状)を構成する点の数。多いほど滑らかで詳細な表面になる。3棟でほぼ同数=各棟が均等な密度で出力できていることの目安にもなる。">頂点数</div><div class="big" style="font-size:20px; margin-top:12px;">22,380 / 22,170 / 21,917</div><div class="sub">各成分の頂点数</div></div>
     </div>
   </section>
 
   <section>
     <div class="section-head"><span class="idx">09</span><h2>Q&amp;A</h2></div>
-    <p class="section-note">本デザインの構造検証について、よく論点になりうる5つの問いと、実データに基づく回答をまとめた。</p>
+    <p class="section-note">本デザインの構造検証・設計手法について、よく論点になりうる10の問いと、実データに基づく回答をまとめた。</p>
     <div class="qa-list">
 
       <div class="qa-card">
@@ -513,12 +513,47 @@
         </div>
       </div>
 
+      <div class="qa-card">
+        <div class="qa-q"><span class="tag">Q6</span>計算にはどれくらい時間がかかる？実務の設計サイクルで使えるレベルか？</div>
+        <div class="qa-a">
+          HD解析（要素サイズ2.0m・反復70回）は1棟あたり数十分〜1時間程度、3棟逐次で数時間かかる。一方、プレビュー用の低解像度設定（要素サイズ2.5m・反復40回）なら数分で1棟の形状候補が出せる。実際の進め方も、日中は高速プレビューで多数の形状案を試し、夜間にHD解析で最終候補だけを精査する2段階のワークフローを取っている。<strong>今回のecho43hdも100パターン以上の試行を経てたどり着いた候補で、1発勝負の出力ではない</strong>。
+        </div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-q"><span class="tag">Q7</span>ピアやリングビームを人が先に置いているのは、「完全自動の最適化」と言えるのか？</div>
+        <div class="qa-a">
+          正確には「制約付きトポロジー最適化」。ピア・床・冠・基部は構造・機能上必須な要素として最初から固定し、残りの自由な領域だけをSIMPが最適化している。完全に自由な最適化にすると、荷重を最短経路だけで解いてしまい、内部空間や窓を持つ「建物」としての要件を満たせなくなる。実務の構造設計でもコアやピロティなど固定要素を先に決めてから最適化する進め方は一般的で、特殊な操作ではない。
+        </div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-q"><span class="tag">Q8</span>高さ106/88/96mは最適化の結果か、それとも最初から決めた値か？</div>
+        <div class="qa-a">
+          高さは<span class="term" tabindex="0" data-def="height_m。各棟のシミュレーション実行前に人が指定する入力パラメータ。SIMPはこの高さの中でどう質量を配分するかだけを最適化し、高さ自体は最適化の対象に含まれていない。">入力値として先に指定</span>しており、SIMPが決めているのは「その高さの中でどう質量を配分するか」という形状分布であって、高さそのものではない。この点は正直に述べるべき制約。ただし高さは敷地の容積率など実務上の外部条件で決まることが多く、建築設計の一般的な進め方と変わらない。
+        </div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-q"><span class="tag">Q9</span>3棟で敷地も形も違うのに、ピア10本・リングビームなど構造の考え方を統一しているのは矛盾しないか？</div>
+        <div class="qa-a">
+          統一しているのは「補強のルール（本数の目安・厚みの目安）」であって「結果の形」ではない。同じルールから出発しても、各棟の敷地形状・高さ・地震荷重の向きが異なるためSIMPが個別に解き、結果としてlinear／ogive／uppertaperという異なる外形に自然に分かれた。<strong>統一ルール×異なる条件＝異なる結果</strong>という関係であり、矛盾ではなく設計手法の一貫性の表れ。
+        </div>
+      </div>
+
+      <div class="qa-card">
+        <div class="qa-q"><span class="tag">Q10</span>「echo43hd」という名前は何を意味する？思いつきの1回きりの案では？</div>
+        <div class="qa-a">
+          「echo」はこのプロジェクトの試行シリーズ名で、43番目のバリエーションを「hd」＝高解像度（要素サイズ2.0m・反復70回）で再計算したもの、という命名規則。プロジェクト全体では最終的に100パターン以上の形状バリエーションを検証しており、echo43hdはその中から接続性・監査・支持・応力の4つの検証を最も安定して通過した候補として選定された。<strong>行き当たりばったりの1発ではなく、比較検討を経た選定結果</strong>。
+        </div>
+      </div>
+
     </div>
   </section>
 
   <footer>
     <span>Data: night_log.txt（2026-07-05, HD計算 elem_m=2.0 / iters=70）／ 再検証済み 2026-07-09（floorarea・audit・support・clearz・conn値は完全一致 = 幾何形状不変を確認）</span>
-    <span>echo43hd_smooth.3dm / echo43hd_design.3dm / echo43hd_layers.3dm</span>
+    <span><span class="term" tabindex="0" data-def="外皮を滑らかに丸めた、有機的な穴あきの外観バージョン。パース・模型・プレゼン用の見た目重視の書き出し。">_smooth.3dm</span> / <span class="term" tabindex="0" data-def="窓のような角ばった規則的な開口をシャープに残した、意匠検討用のバージョン。">_design.3dm</span> / <span class="term" tabindex="0" data-def="外壁・内部構造・床・ポッドなどをレイヤ別に分けて出力した、構造検討・図面作成用のバージョン。">_layers.3dm</span> の3種類のCADファイルを出力</span>
   </footer>
 
 </div>
