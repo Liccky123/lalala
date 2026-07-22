@@ -69,9 +69,9 @@
   }
 
   /* ---- motion: content is ALWAYS visible; animation only nudges it in as a bonus ---- */
-  section > h1, .statline{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
+  section > h1.go, .statline.go{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
   @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
-  @media (prefers-reduced-motion: reduce){ section > h1, .statline{ animation:none; } }
+  @media (prefers-reduced-motion: reduce){ section > h1.go, .statline.go{ animation:none !important; } }
 
   .statline{
     display:flex; align-items:baseline; gap:10px; margin:2px 0 16px;
@@ -822,6 +822,18 @@
 
 <script>
 (function(){
+  // scroll-triggered nudge-in for section headers & the iteration-count stat line —
+  // always visible via plain CSS; JS only adds ".go" once well inside the viewport.
+  var revealEls = document.querySelectorAll('section > h1, .statline');
+  var revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('go');
+      revealIO.unobserve(e.target);
+    });
+  }, {threshold:.2, rootMargin:'0px 0px -12% 0px'});
+  revealEls.forEach(function(el){ revealIO.observe(el); });
+
   // count-up numbers (HTML already shows the real, correct value as a static fallback)
   var nums = document.querySelectorAll('.cnum[data-count]');
   var counted = new WeakSet();
@@ -841,7 +853,7 @@
       }
       requestAnimationFrame(step);
     });
-  }, {threshold:.6});
+  }, {threshold:.35, rootMargin:'0px 0px -12% 0px'});
   nums.forEach(function(n){ io.observe(n); });
 })();
 </script>

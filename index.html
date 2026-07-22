@@ -47,8 +47,7 @@
   }
   .hero-title{
     margin:14px 0 0; color:#fbfbfa; font-weight:900;
-    font-size:clamp(52px, 13vw, 168px); line-height:.94; letter-spacing:-.02em;
-    text-wrap:balance;
+    font-size:clamp(68px, 19vw, 240px); line-height:.92; letter-spacing:-.02em;
     opacity:0; transform:translateY(26px) scale(.94);
     animation:slamIn .85s cubic-bezier(.2,.9,.25,1.05) .25s forwards;
     text-shadow:0 10px 60px rgba(0,0,0,.55);
@@ -86,9 +85,9 @@
   .sub{color:var(--ink-soft); font-size:14.5px; max-width:56ch;}
 
   /* ---- reveal: subtle load-in nudge; content is ALWAYS visible (opacity never goes below 1) ---- */
-  .reveal{animation:nudgeIn .8s cubic-bezier(.16,.8,.3,1) backwards; animation-delay:var(--rd,0s);}
+  .reveal.go{animation:nudgeIn .8s cubic-bezier(.16,.8,.3,1) backwards;}
   @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
-  @media (prefers-reduced-motion: reduce){ .reveal{animation:none;} }
+  @media (prefers-reduced-motion: reduce){ .reveal.go{animation:none !important;} }
 
   /* ---- stat strip ---- */
   .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:44px; background:var(--paper-line); border:1px solid var(--paper-line);}
@@ -130,7 +129,7 @@
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
-    <h1 class="hero-title"><span class="hit">渋谷</span>から生成</h1>
+    <h1 class="hero-title"><span class="hit">渋谷</span><br>から生成</h1>
     <p class="hero-sub">見えない力を、建築の輪郭に変える。実在する3敷地の実データをそのまま構造最適化の境界条件として入力し、生成された3棟の生物形態タワー。</p>
   </div>
   <div class="hero-scroll"><span class="ln"></span>SCROLL</div>
@@ -170,12 +169,22 @@
 
 <script>
 (function(){
-  // stagger the load-in animation (purely cosmetic — if this never runs, elements are still visible via CSS animation)
-  document.querySelectorAll('.reveal').forEach(function(el, i){
-    el.style.setProperty('--rd', (Math.min(i, 8) * 0.07) + 's');
-  });
+  // scroll-triggered nudge-in: elements are ALWAYS visible via plain CSS; JS only adds
+  // ".go" (which starts the animation) once the element is well inside the viewport —
+  // never on page load, so nothing finishes animating before you've scrolled to it.
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  var revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('go');
+      revealIO.unobserve(e.target);
+    });
+  }, {threshold:.2, rootMargin:'0px 0px -12% 0px'});
+  revealEls.forEach(function(el){ revealIO.observe(el); });
 
-  // count-up stats (HTML already shows the real number as a static fallback)
+  // count-up stats (HTML already shows the real number as a static fallback).
+  // rootMargin pulls the trigger line up from the very bottom edge of the screen so the
+  // count finishes while the number is actually in comfortable view, not before you arrive.
   var nums = document.querySelectorAll('.stat .num');
   var counted = new WeakSet();
   var io2 = new IntersectionObserver(function(entries){
@@ -192,7 +201,7 @@
       }
       requestAnimationFrame(step);
     });
-  }, {threshold:.5});
+  }, {threshold:.4, rootMargin:'0px 0px -12% 0px'});
   nums.forEach(function(n){ n.textContent = n.getAttribute('data-count'); io2.observe(n); });
 
   // hero parallax

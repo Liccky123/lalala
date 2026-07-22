@@ -212,15 +212,19 @@
     .meta-strip div{border-left:none; border-top:1px solid var(--paper-line);}
   }
 
-  /* ---- motion: content is ALWAYS visible; animation only nudges/pops it in as a bonus ---- */
-  .reveal{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; animation-delay:var(--rd,0s); }
+  /* ---- motion: content is ALWAYS visible; .go is added by JS once scrolled into view; animation only nudges it in as a bonus ---- */
+  .reveal.go{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; animation-delay:var(--rd,0s); }
   @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
   .pop{ animation:popIn .55s cubic-bezier(.34,1.56,.64,1) backwards; animation-delay:var(--pd,0s); display:inline-block; }
   @keyframes popIn{ 0%{ opacity:.001; transform:scale(.35) translateY(6px); } 65%{ opacity:1; transform:scale(1.14); } 100%{ opacity:1; transform:scale(1) translateY(0); } }
-  @media (prefers-reduced-motion: reduce){ .reveal, .pop{ animation:none; } }
+  @media (prefers-reduced-motion: reduce){ .reveal.go, .pop, .section-head.go{ animation:none !important; } }
 
-  .section-head{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
+  .section-head.go{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
   .status-chip{ animation:popIn .6s cubic-bezier(.34,1.56,.64,1) backwards; animation-delay:.5s; }
+
+  /* ---- grow-in bar charts & gauge markers on scroll (JS zeroes then restores the real value already baked into the DOM) ---- */
+  .fbar-fill, .clear-fill{ transition:width 1.1s cubic-bezier(.16,.8,.3,1); }
+  .gauge-marker{ transition:left 1.1s cubic-bezier(.16,.8,.3,1); }
   .tower-card, .stat-card, .qa-card{ transition:transform .3s cubic-bezier(.16,.8,.3,1), box-shadow .3s ease, border-color .3s ease; }
   .tower-card:hover, .stat-card:hover{ transform:translateY(-5px); box-shadow:0 16px 28px rgba(0,0,0,.12); border-color:var(--steel); }
   .qa-card:hover{ border-color:var(--steel); box-shadow:0 10px 22px rgba(0,0,0,.1); }
@@ -632,12 +636,25 @@
 
 <script>
 (function(){
-  // stagger nudge-in for anything with class="reveal" that didn't get an inline --rd
-  document.querySelectorAll('.reveal').forEach(function(el){
+  // scroll-triggered nudge-in: elements are ALWAYS visible via plain CSS; JS only adds
+  // ".go" (which starts the animation) once the element is well inside the viewport —
+  // never on page load, so nothing finishes animating before you've scrolled to it.
+  var revealEls = document.querySelectorAll('.reveal, .section-head');
+  var revealIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('go');
+      revealIO.unobserve(e.target);
+    });
+  }, {threshold:.2, rootMargin:'0px 0px -12% 0px'});
+  revealEls.forEach(function(el){
     if (!el.style.getPropertyValue('--rd')) el.style.setProperty('--rd', '0s');
+    revealIO.observe(el);
   });
 
-  // count-up numbers (HTML already shows the real, correct value as a static fallback)
+  // count-up numbers (HTML already shows the real, correct value as a static fallback).
+  // rootMargin pulls the trigger line up from the very bottom edge of the screen so the
+  // count finishes while the number is actually in comfortable view, not before you arrive.
   var nums = document.querySelectorAll('.cnum');
   var counted = new WeakSet();
   var io = new IntersectionObserver(function(entries){
@@ -656,7 +673,31 @@
       }
       requestAnimationFrame(step);
     });
-  }, {threshold:.6});
+  }, {threshold:.35, rootMargin:'0px 0px -12% 0px'});
   nums.forEach(function(n){ io.observe(n); });
+
+  // grow-in bar charts & gauge markers: real values are already in the DOM (safe fallback
+  // if JS never runs); JS zeroes them out then animates back to the real value on scroll-in.
+  var bars = document.querySelectorAll('.fbar-fill, .clear-fill');
+  bars.forEach(function(b){ b.setAttribute('data-w', b.style.width); b.style.width = '0%'; });
+  var barIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.style.width = e.target.getAttribute('data-w');
+      barIO.unobserve(e.target);
+    });
+  }, {threshold:.15, rootMargin:'0px 0px -10% 0px'});
+  bars.forEach(function(b){ barIO.observe(b); });
+
+  var markers = document.querySelectorAll('.gauge-marker');
+  markers.forEach(function(m){ m.setAttribute('data-left', m.style.left); m.style.left = '0%'; });
+  var gaugeIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.style.left = e.target.getAttribute('data-left');
+      gaugeIO.unobserve(e.target);
+    });
+  }, {threshold:.3, rootMargin:'0px 0px -10% 0px'});
+  markers.forEach(function(m){ gaugeIO.observe(m); });
 })();
 </script>
