@@ -22,6 +22,9 @@
   .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--steel); font-weight:700;}
   h1{font-size:28px; font-weight:800; margin:10px 0 6px;}
   .sub{color:var(--ink-soft); font-size:14.5px; max-width:56ch;}
+  .videos{display:grid; gap:16px; margin-top:36px; grid-template-columns:1fr 1fr;}
+  .videos video{width:100%; display:block; background:#000; border:1px solid var(--paper-line);}
+  @media (max-width:640px){ .videos{grid-template-columns:1fr;} }
   .cards{display:grid; gap:16px; margin-top:44px;}
   a.card{
     display:block; text-decoration:none; color:inherit; border:1px solid var(--paper-line);
@@ -39,6 +42,11 @@
   <div class="eyebrow">echo43hd — 生物形態トポロジー最適化タワー</div>
   <h1>プロジェクト資料</h1>
   <div class="sub">3敷地(west / southeast / north)に対するトポロジー最適化タワーの設計プロジェクト。検証データ・設計スタディーの全記録・コンセプトコミックをまとめています。</div>
+
+  <div class="videos">
+    <video src="video1.mp4" controls playsinline preload="metadata"></video>
+    <video src="video2.mp4" controls playsinline preload="metadata"></video>
+  </div>
 
   <div class="cards">
     <a class="card" href="report.html">
