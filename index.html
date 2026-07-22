@@ -59,17 +59,17 @@
   /* explosion flash — a bright burst at the viewport center behind the title */
   .hero-flash{
     position:absolute; z-index:2; left:50%; top:50%;
-    width:64vmax; height:64vmax; margin:-32vmax 0 0 -32vmax;
+    width:130vmax; height:130vmax; margin:-65vmax 0 0 -65vmax;
     pointer-events:none; opacity:0; mix-blend-mode:screen;
     background:radial-gradient(circle,
       rgba(255,252,244,1) 0%, rgba(255,238,205,.7) 7%,
       rgba(227,180,99,.32) 17%, transparent 40%);
   }
-  .hero-flash.go{ animation:flashBurst .5s cubic-bezier(.12,.7,.3,1) forwards; }
+  .hero-flash.go{ animation:flashBurst 1.5s cubic-bezier(.1,.6,.25,1) forwards; }
   @keyframes flashBurst{
-    0%{ opacity:0; transform:scale(.15); }
-    14%{ opacity:1; }
-    100%{ opacity:0; transform:scale(2.4); }
+    0%{ opacity:0; transform:scale(.1); }
+    12%{ opacity:1; }
+    100%{ opacity:0; transform:scale(2.6); }
   }
   .hero-sub{
     max-width:60ch; margin-top:20px; font-size:clamp(13.5px,1.7vw,16px); color:#d8dedb;
@@ -141,7 +141,7 @@
   <div class="hero-flash"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
-    <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span></h1>
+    <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span><span class="ch">。</span></h1>
     <p class="hero-sub">見えない力を、建築の輪郭に変える。実在する3敷地の実データをそのまま構造最適化の境界条件として入力し、生成された3棟の生物形態タワー。</p>
   </div>
   <div class="hero-scroll"><span class="ln"></span>SCROLL</div>
@@ -173,7 +173,7 @@
       var d = data[i];
       ch.style.transition = 'none';
       ch.style.opacity = '0';
-      ch.style.transform = 'translate(' + d.dx + 'px,' + d.dy + 'px) scale(.06) rotate(' + d.rot + 'deg)';
+      ch.style.transform = 'translate(' + d.dx + 'px,' + d.dy + 'px) scale(.035) rotate(' + d.rot + 'deg)';
     });
     // force a reflow so the collapsed start state is committed before detonation
     document.querySelector('.hero-title').offsetWidth;
@@ -181,9 +181,9 @@
       var flash = document.querySelector('.hero-flash');
       if (flash) flash.classList.add('go');
       chars.forEach(function(ch, i){
-        var delay = i * 0.02; // near-simultaneous; tiny stagger adds depth
-        // overshoot easing (y2 > 1): each glyph blasts past its spot, then snaps back
-        ch.style.transition = 'transform .95s cubic-bezier(.16,1.4,.32,1) ' + delay + 's, opacity .28s ease ' + delay + 's';
+        var delay = i * 0.07; // wider stagger — the blast visibly sweeps across the glyphs
+        // overshoot easing (y2 > 1): each glyph blasts past its spot, then settles slowly
+        ch.style.transition = 'transform 2.1s cubic-bezier(.14,1.55,.3,1) ' + delay + 's, opacity .5s ease ' + delay + 's';
         ch.style.transform = 'translate(0,0) scale(1) rotate(0deg)';
         ch.style.opacity = '1';
       });
