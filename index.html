@@ -48,14 +48,13 @@
   .hero-title{
     margin:14px 0 0; color:#fbfbfa; font-weight:900;
     font-size:clamp(68px, 19vw, 240px); line-height:.92; letter-spacing:-.02em;
-    display:inline-block; transform-origin:50% 50%;
-    opacity:0; transform:scale(.18);
-    animation:growIn 1.35s cubic-bezier(.16,.85,.28,1) .2s forwards;
     text-shadow:0 10px 60px rgba(0,0,0,.55);
   }
-  .hero-title .hit{
-    display:inline-block; color:var(--brass);
-  }
+  /* each character is animated individually: born at screen center (tiny),
+     then flies out to its final place while growing. Default (no-JS) state is
+     the finished title, fully visible in place — the scatter is a JS-only bonus. */
+  .hero-title .ch{ display:inline-block; will-change:transform, opacity; }
+  .hero-title .hit{ color:var(--brass); }
   .hero-sub{
     max-width:60ch; margin-top:20px; font-size:clamp(13.5px,1.7vw,16px); color:#d8dedb;
     opacity:0; transform:translateY(10px);
@@ -70,14 +69,9 @@
   .hero-scroll .ln{width:26px; height:1px; background:currentColor; animation:pulseLn 1.8s ease-in-out infinite;}
 
   @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
-  @keyframes growIn{
-    0%{ opacity:0; transform:scale(.18); }
-    30%{ opacity:1; }
-    100%{ opacity:1; transform:scale(1); }
-  }
   @keyframes pulseLn{ 0%,100%{opacity:.35;} 50%{opacity:1;} }
   @media (prefers-reduced-motion: reduce){
-    .hero-eyebrow, .hero-title, .hero-sub, .hero-scroll{ animation:none !important; opacity:1 !important; transform:none !important; }
+    .hero-eyebrow, .hero-title, .hero-title .ch, .hero-sub, .hero-scroll{ animation:none !important; opacity:1 !important; transform:none !important; }
   }
 
   /* ================= BODY ================= */
@@ -130,11 +124,48 @@
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
-    <h1 class="hero-title"><span class="hit">渋谷</span><br>から生成</h1>
+    <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span></h1>
     <p class="hero-sub">見えない力を、建築の輪郭に変える。実在する3敷地の実データをそのまま構造最適化の境界条件として入力し、生成された3棟の生物形態タワー。</p>
   </div>
   <div class="hero-scroll"><span class="ln"></span>SCROLL</div>
 </div>
+
+<script>
+/* Title scatter: run synchronously right after the hero so the "born at center"
+   state is applied before first paint (no flash of the finished title). Each
+   character starts piled at the viewport center, tiny + invisible, then flies
+   out to its own place while growing. If anything here throws, the title is
+   already in its correct, fully-visible position via plain CSS. */
+(function(){
+  try{
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var chars = document.querySelectorAll('.hero-title .ch');
+    if (!chars.length) return;
+    var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    var data = [];
+    chars.forEach(function(ch){
+      var r = ch.getBoundingClientRect();
+      data.push({ dx: cx - (r.left + r.width/2), dy: cy - (r.top + r.height/2) });
+    });
+    chars.forEach(function(ch, i){
+      var d = data[i];
+      ch.style.transition = 'none';
+      ch.style.opacity = '0';
+      ch.style.transform = 'translate(' + d.dx + 'px,' + d.dy + 'px) scale(.05)';
+    });
+    // force a reflow so the centered/hidden start state is committed before we animate
+    document.querySelector('.hero-title').offsetWidth;
+    requestAnimationFrame(function(){
+      chars.forEach(function(ch, i){
+        var delay = i * 0.08;
+        ch.style.transition = 'transform 1.15s cubic-bezier(.16,.85,.28,1) ' + delay + 's, opacity .5s ease ' + delay + 's';
+        ch.style.transform = 'translate(0,0) scale(1)';
+        ch.style.opacity = '1';
+      });
+    });
+  }catch(e){ /* leave the title in its default visible position */ }
+})();
+</script>
 
 <div class="wrap" id="below">
   <div class="section-eyebrow reveal">Preview</div>
