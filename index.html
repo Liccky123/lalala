@@ -137,6 +137,47 @@
     58%{ opacity:.35; }
     100%{ opacity:0; transform:translate(var(--fx),var(--fy)) scale(var(--fs,1.3)) rotate(var(--fr,30deg)); }
   }
+  /* dark billowing smoke — wreathes around/above the fireball, cauliflower-textured,
+     with a faint warm rim-light where the fire glows through it from behind. */
+  .hero-smoke, .hero-smoke2, .hero-smoke3, .hero-smoke4{
+    position:absolute; z-index:2; bottom:30%; pointer-events:none; opacity:0; filter:blur(3px);
+    border-radius:54% 46% 44% 48% / 58% 64% 38% 40%;
+    background:
+      radial-gradient(circle at 50% 78%, rgba(255,135,45,.25), transparent 34%),
+      radial-gradient(circle at 50% 52%, rgba(58,44,35,.94) 0%, rgba(36,27,21,.9) 50%, rgba(20,14,11,.75) 76%, transparent 92%);
+  }
+  .hero-smoke{ left:47%; width:68vmax; height:54vmax; margin-left:-34vmax; }
+  .hero-smoke2{ left:27%; width:44vmax; height:36vmax; margin-left:-22vmax; }
+  .hero-smoke3{ left:71%; width:46vmax; height:37vmax; margin-left:-23vmax; }
+  .hero-smoke4{ left:50%; width:34vmax; height:29vmax; margin-left:-17vmax; bottom:46%; }
+  .hero-smoke.go{ animation:smokeRise 3.6s cubic-bezier(.2,.7,.3,1) .3s forwards; }
+  .hero-smoke2.go{ animation:smokeRise2 3.4s cubic-bezier(.2,.7,.3,1) .4s forwards; }
+  .hero-smoke3.go{ animation:smokeRise3 3.5s cubic-bezier(.2,.7,.3,1) .46s forwards; }
+  .hero-smoke4.go{ animation:smokeRise4 3.3s cubic-bezier(.2,.7,.3,1) .55s forwards; }
+  @keyframes smokeRise{
+    0%{ opacity:0; transform:translateY(9vmax) scale(.3); }
+    24%{ opacity:.9; }
+    60%{ opacity:.68; transform:translateY(-20vmax) scale(1.4); }
+    100%{ opacity:0; transform:translateY(-38vmax) scale(1.85); }
+  }
+  @keyframes smokeRise2{
+    0%{ opacity:0; transform:translateY(8vmax) scale(.28); }
+    26%{ opacity:.8; }
+    60%{ opacity:.6; transform:translateY(-17vmax) scale(1.3); }
+    100%{ opacity:0; transform:translateY(-32vmax) scale(1.7); }
+  }
+  @keyframes smokeRise3{
+    0%{ opacity:0; transform:translateY(8.5vmax) scale(.26); }
+    26%{ opacity:.78; }
+    60%{ opacity:.58; transform:translateY(-18vmax) scale(1.32); }
+    100%{ opacity:0; transform:translateY(-33vmax) scale(1.72); }
+  }
+  @keyframes smokeRise4{
+    0%{ opacity:0; transform:translateY(7vmax) scale(.24); }
+    24%{ opacity:.7; }
+    58%{ opacity:.5; transform:translateY(-15vmax) scale(1.25); }
+    100%{ opacity:0; transform:translateY(-28vmax) scale(1.6); }
+  }
   /* mushroom fireball — a rising, billowing column of FIRE (not smoke) that blooms
      into the classic mushroom-cap silhouette: the signature "big explosion" image. */
   .hero-stem{
@@ -161,29 +202,29 @@
       rgba(255,246,205,.98) 0%, rgba(255,160,55,.85) 26%,
       rgba(232,75,20,.65) 48%, rgba(130,28,12,.32) 70%, transparent 85%);
   }
-  .hero-mushroom{ left:50%; width:56vmax; height:44vmax; margin-left:-28vmax; }
-  .hero-mushroom2{ left:38%; width:30vmax; height:25vmax; margin-left:-15vmax; }
-  .hero-mushroom3{ left:63%; width:27vmax; height:23vmax; margin-left:-13.5vmax; }
+  .hero-mushroom{ left:50%; width:42vmax; height:34vmax; margin-left:-21vmax; }
+  .hero-mushroom2{ left:38%; width:22vmax; height:18vmax; margin-left:-11vmax; }
+  .hero-mushroom3{ left:63%; width:20vmax; height:17vmax; margin-left:-10vmax; }
   .hero-mushroom.go{ animation:mushroomRise 3.3s cubic-bezier(.2,.7,.3,1) .26s forwards; }
   .hero-mushroom2.go{ animation:mushroomRise2 3.1s cubic-bezier(.2,.7,.3,1) .4s forwards; }
   .hero-mushroom3.go{ animation:mushroomRise3 3.2s cubic-bezier(.2,.7,.3,1) .48s forwards; }
   @keyframes mushroomRise{
-    0%{ opacity:0; transform:translateY(11vmax) scale(.28); }
+    0%{ opacity:0; transform:translateY(9vmax) scale(.28); }
     20%{ opacity:.98; }
-    55%{ opacity:.72; transform:translateY(-17vmax) scale(1.28); }
-    100%{ opacity:0; transform:translateY(-32vmax) scale(1.65); }
+    55%{ opacity:.72; transform:translateY(-9vmax) scale(1.2); }
+    100%{ opacity:0; transform:translateY(-18vmax) scale(1.5); }
   }
   @keyframes mushroomRise2{
-    0%{ opacity:0; transform:translateY(9vmax) scale(.25); }
+    0%{ opacity:0; transform:translateY(7vmax) scale(.25); }
     22%{ opacity:.85; }
-    55%{ opacity:.6; transform:translateY(-14vmax) scale(1.2); }
-    100%{ opacity:0; transform:translateY(-26vmax) scale(1.5); }
+    55%{ opacity:.6; transform:translateY(-7vmax) scale(1.15); }
+    100%{ opacity:0; transform:translateY(-14vmax) scale(1.4); }
   }
   @keyframes mushroomRise3{
-    0%{ opacity:0; transform:translateY(10vmax) scale(.22); }
+    0%{ opacity:0; transform:translateY(8vmax) scale(.22); }
     22%{ opacity:.8; }
-    55%{ opacity:.55; transform:translateY(-15vmax) scale(1.15); }
-    100%{ opacity:0; transform:translateY(-27vmax) scale(1.45); }
+    55%{ opacity:.55; transform:translateY(-7.5vmax) scale(1.1); }
+    100%{ opacity:0; transform:translateY(-15vmax) scale(1.35); }
   }
   /* impact rumble on the whole hero */
   @keyframes heroShake{
@@ -262,6 +303,10 @@
 <div class="hero">
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-nuke"></div>
+  <div class="hero-smoke"></div>
+  <div class="hero-smoke2"></div>
+  <div class="hero-smoke3"></div>
+  <div class="hero-smoke4"></div>
   <div class="hero-mushroom"></div>
   <div class="hero-mushroom2"></div>
   <div class="hero-mushroom3"></div>
@@ -317,7 +362,9 @@
     document.querySelector('.hero-title').offsetWidth;
     requestAnimationFrame(function(){
       var hero = document.querySelector('.hero');
-      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3', '.hero-mushroom', '.hero-mushroom2', '.hero-mushroom3', '.hero-stem']
+      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3',
+       '.hero-smoke', '.hero-smoke2', '.hero-smoke3', '.hero-smoke4',
+       '.hero-mushroom', '.hero-mushroom2', '.hero-mushroom3', '.hero-stem']
         .forEach(function(sel){ var el = document.querySelector(sel); if (el) el.classList.add('go'); });
       if (hero){
         hero.classList.add('shake');
