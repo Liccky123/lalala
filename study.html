@@ -67,6 +67,24 @@
   .textnote{
     border:1px solid var(--paper-line); background:var(--panel); padding:14px 16px; margin-bottom:26px; font-size:13px; color:var(--ink-soft);
   }
+
+  /* ---- motion: content is ALWAYS visible; animation only nudges it in as a bonus ---- */
+  section > h1, .statline{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
+  @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
+  @media (prefers-reduced-motion: reduce){ section > h1, .statline{ animation:none; } }
+
+  .statline{
+    display:flex; align-items:baseline; gap:10px; margin:2px 0 16px;
+    font-family:var(--mono); color:var(--steel);
+  }
+  .statline .cnum{font-size:30px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums;}
+  .statline .u{font-size:11px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase;}
+
+  .zoomctl button{ transition:background .2s ease, transform .15s ease; }
+  .zoomctl button:hover{ background:var(--steel-tint); transform:translateY(-1px); }
+
+  tbody tr{ transition:background .15s ease; }
+  tbody tr:hover{ background:rgba(127,176,209,.07); }
 </style>
 </head>
 <body>
@@ -75,7 +93,8 @@
 <div class="wrap wide">
 
   <section>
-    <h1>設計スタディー全記録（171イテレーション）</h1>
+    <h1>設計スタディー全記録</h1>
+    <div class="statline"><span class="cnum" data-count="171">171</span><span class="u">iterations logged</span></div>
     <p class="lede">2026-06-15〜07-05、各3棟の鳥瞰パース。<b>ピンチ / ドラッグ / ダブルタップ</b>で拡大できます。</p>
     <div class="zoomer" id="zoom-study">
       <img id="img-study" src="study_board.jpg" alt="echo43hd 設計スタディー全記録">
@@ -798,6 +817,32 @@
 
   makeZoomer('zoom-study', 'img-study');
   makeZoomer('zoom-comic', 'img-comic');
+})();
+</script>
+
+<script>
+(function(){
+  // count-up numbers (HTML already shows the real, correct value as a static fallback)
+  var nums = document.querySelectorAll('.cnum[data-count]');
+  var counted = new WeakSet();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting || counted.has(e.target)) return;
+      counted.add(e.target);
+      var target = parseFloat(e.target.getAttribute('data-count'));
+      var dec = parseInt(e.target.getAttribute('data-dec') || '0', 10);
+      var start = performance.now(), dur = 1000;
+      function step(t){
+        var p = Math.min(1, (t - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        e.target.textContent = (eased * target).toFixed(dec);
+        if (p < 1) requestAnimationFrame(step);
+        else e.target.textContent = target.toFixed(dec);
+      }
+      requestAnimationFrame(step);
+    });
+  }, {threshold:.6});
+  nums.forEach(function(n){ io.observe(n); });
 })();
 </script>
 </body>
