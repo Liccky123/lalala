@@ -211,6 +211,22 @@
     .meta-strip{grid-template-columns:repeat(2,1fr);}
     .meta-strip div{border-left:none; border-top:1px solid var(--paper-line);}
   }
+
+  /* ---- motion: content is ALWAYS visible; animation only nudges/pops it in as a bonus ---- */
+  .reveal{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; animation-delay:var(--rd,0s); }
+  @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
+  .pop{ animation:popIn .55s cubic-bezier(.34,1.56,.64,1) backwards; animation-delay:var(--pd,0s); display:inline-block; }
+  @keyframes popIn{ 0%{ opacity:.001; transform:scale(.35) translateY(6px); } 65%{ opacity:1; transform:scale(1.14); } 100%{ opacity:1; transform:scale(1) translateY(0); } }
+  @media (prefers-reduced-motion: reduce){ .reveal, .pop{ animation:none; } }
+
+  .section-head{ animation:nudgeIn .7s cubic-bezier(.16,.8,.3,1) backwards; }
+  .status-chip{ animation:popIn .6s cubic-bezier(.34,1.56,.64,1) backwards; animation-delay:.5s; }
+  .tower-card, .stat-card, .qa-card{ transition:transform .3s cubic-bezier(.16,.8,.3,1), box-shadow .3s ease, border-color .3s ease; }
+  .tower-card:hover, .stat-card:hover{ transform:translateY(-5px); box-shadow:0 16px 28px rgba(0,0,0,.12); border-color:var(--steel); }
+  .qa-card:hover{ border-color:var(--steel); box-shadow:0 10px 22px rgba(0,0,0,.1); }
+  @media (prefers-color-scheme: dark){
+    .tower-card:hover, .stat-card:hover, .qa-card:hover{ box-shadow:0 16px 28px rgba(0,0,0,.4); }
+  }
 </style>
 
 <div style="max-width:960px;margin:0 auto;padding:14px 20px 0;">
@@ -253,8 +269,8 @@
         <div class="tower-stats">
           <div class="row"><span class="l">高さ</span><span class="v num">106 m</span></div>
           <div class="row"><span class="l">フロア</span><span class="v num">11層 / 290 m²/階</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num">100.0%</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num">8.0</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num"><span class="cnum" data-count="100.0" data-dec="1">100.0</span>%</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num"><span class="cnum" data-count="8.0" data-dec="1">8.0</span></span></div>
           <div class="row"><span class="l">支持判定</span><span class="pill ok">PASS</span></div>
         </div>
       </div>
@@ -264,8 +280,8 @@
         <div class="tower-stats">
           <div class="row"><span class="l">高さ</span><span class="v num">88 m</span></div>
           <div class="row"><span class="l">フロア</span><span class="v num">9層 / 405 m²/階</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num">99.7%</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num">7.5</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num"><span class="cnum" data-count="99.7" data-dec="1">99.7</span>%</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num"><span class="cnum" data-count="7.5" data-dec="1">7.5</span></span></div>
           <div class="row"><span class="l">支持判定</span><span class="pill warn term" tabindex="0" data-def="「首」とは上下階を繋ぐ断面のうち接触面積が最も細くなる箇所。人間の首のように、ここが細いと理論上折れやすい。ここではz=74mの1箇所だけが基準未達。05章参照。">首 NG @ z=74m</span></div>
         </div>
       </div>
@@ -275,8 +291,8 @@
         <div class="tower-stats">
           <div class="row"><span class="l">高さ</span><span class="v num">96 m</span></div>
           <div class="row"><span class="l">フロア</span><span class="v num">10層 / 286 m²/階</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num">99.1%</span></div>
-          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num">7.3</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="二値化した後、地面から繋がっている材料が全体の何%を占めるか。100%に近いほど浮いた破片が少ない、扱いやすい形。">連結率</span><span class="v num"><span class="cnum" data-count="99.1" data-dec="1">99.1</span>%</span></div>
+          <div class="row"><span class="l term" tabindex="0" data-def="フォン・ミーゼス応力(材料の壊れやすさを1つの数値にまとめた指標)の、最大値÷平均値。大きいほど一部に力が集中していることを意味する。健全の目安は5〜11。">応力比 max/mean</span><span class="v num"><span class="cnum" data-count="7.3" data-dec="1">7.3</span></span></div>
           <div class="row"><span class="l">支持判定</span><span class="pill ok">PASS</span></div>
         </div>
       </div>
@@ -359,18 +375,18 @@
     <div class="stat-row">
       <div class="stat-card">
         <div class="label">west_block</div>
-        <div class="big">717<span style="font-size:15px">セル</span></div>
-        <div class="sub">基準比 <strong>119.5倍</strong>（上部質量91%）</div>
+        <div class="big"><span class="cnum" data-count="717">717</span><span style="font-size:15px">セル</span></div>
+        <div class="sub">基準比 <strong><span class="cnum" data-count="119.5" data-dec="1">119.5</span>倍</strong>（上部質量91%）</div>
       </div>
       <div class="stat-card">
         <div class="label">southeast_block</div>
-        <div class="big">810<span style="font-size:15px">セル</span></div>
-        <div class="sub">基準比 <strong>135.0倍</strong>（上部質量89%）</div>
+        <div class="big"><span class="cnum" data-count="810">810</span><span style="font-size:15px">セル</span></div>
+        <div class="sub">基準比 <strong><span class="cnum" data-count="135.0" data-dec="1">135.0</span>倍</strong>（上部質量89%）</div>
       </div>
       <div class="stat-card">
         <div class="label">north_block</div>
-        <div class="big">634<span style="font-size:15px">セル</span></div>
-        <div class="sub">基準比 <strong>105.7倍</strong>（上部質量90%・全棟中最小）</div>
+        <div class="big"><span class="cnum" data-count="634">634</span><span style="font-size:15px">セル</span></div>
+        <div class="sub">基準比 <strong><span class="cnum" data-count="105.7" data-dec="1">105.7</span>倍</strong>（上部質量90%・全棟中最小）</div>
       </div>
     </div>
     <div class="callout ok">
@@ -453,8 +469,8 @@
     <div class="section-head"><span class="idx">08</span><h2>出力メッシュの連結性（_conn3dm）</h2></div>
     <p class="section-note">echo43hd_smooth.3dm の exterior_wall / structure レイヤを最終チェック。<span class="term" tabindex="0" data-def="本体から切り離れて宙に浮いている、繋がっていないメッシュの欠片。3Dプリントやレンダリングで意図しないゴミとして映り込む原因になるため、0であることを最終確認する。">断片</span>（浮遊メッシュ）が残っていないかの最終関門。</p>
     <div class="stat-row">
-      <div class="stat-card"><div class="label term" tabindex="0" data-def="繋がった一塊として数えたメッシュのかたまりの数。3棟あるので理想は3。4以上あれば、どこかの棟が分裂して出力されている可能性がある。">成分数</div><div class="big">3</div><div class="sub">west / southeast / north の3棟のみ</div></div>
-      <div class="stat-card"><div class="label">断片</div><div class="big">0</div><div class="sub">浮遊メッシュなし</div></div>
+      <div class="stat-card"><div class="label term" tabindex="0" data-def="繋がった一塊として数えたメッシュのかたまりの数。3棟あるので理想は3。4以上あれば、どこかの棟が分裂して出力されている可能性がある。">成分数</div><div class="big"><span class="cnum" data-count="3">3</span></div><div class="sub">west / southeast / north の3棟のみ</div></div>
+      <div class="stat-card"><div class="label">断片</div><div class="big"><span class="cnum" data-count="0">0</span></div><div class="sub">浮遊メッシュなし</div></div>
       <div class="stat-card"><div class="label term" tabindex="0" data-def="出力された3Dメッシュ(表面形状)を構成する点の数。多いほど滑らかで詳細な表面になる。3棟でほぼ同数=各棟が均等な密度で出力できていることの目安にもなる。">頂点数</div><div class="big" style="font-size:20px; margin-top:12px;">22,380 / 22,170 / 21,917</div><div class="sub">各成分の頂点数</div></div>
     </div>
   </section>
@@ -611,5 +627,36 @@
   document.addEventListener('click', hide);
   window.addEventListener('scroll', hide, {passive:true});
   window.addEventListener('resize', hide);
+})();
+</script>
+
+<script>
+(function(){
+  // stagger nudge-in for anything with class="reveal" that didn't get an inline --rd
+  document.querySelectorAll('.reveal').forEach(function(el){
+    if (!el.style.getPropertyValue('--rd')) el.style.setProperty('--rd', '0s');
+  });
+
+  // count-up numbers (HTML already shows the real, correct value as a static fallback)
+  var nums = document.querySelectorAll('.cnum');
+  var counted = new WeakSet();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting || counted.has(e.target)) return;
+      counted.add(e.target);
+      var target = parseFloat(e.target.getAttribute('data-count'));
+      var dec = parseInt(e.target.getAttribute('data-dec') || '0', 10);
+      var start = performance.now(), dur = 1000 + Math.random() * 300;
+      function step(t){
+        var p = Math.min(1, (t - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        e.target.textContent = (eased * target).toFixed(dec);
+        if (p < 1) requestAnimationFrame(step);
+        else e.target.textContent = target.toFixed(dec);
+      }
+      requestAnimationFrame(step);
+    });
+  }, {threshold:.6});
+  nums.forEach(function(n){ io.observe(n); });
 })();
 </script>
