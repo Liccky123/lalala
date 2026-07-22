@@ -137,33 +137,53 @@
     58%{ opacity:.35; }
     100%{ opacity:0; transform:translate(var(--fx),var(--fy)) scale(var(--fs,1.3)) rotate(var(--fr,30deg)); }
   }
-  /* mushroom cloud — a rising, expanding blob of hot smoke, H-bomb signature */
+  /* mushroom fireball — a rising, billowing column of FIRE (not smoke) that blooms
+     into the classic mushroom-cap silhouette: the signature "big explosion" image. */
   .hero-stem{
-    position:absolute; z-index:2; left:50%; bottom:16%;
-    width:7vmax; height:24vmax; margin-left:-3.5vmax;
-    pointer-events:none; opacity:0; filter:blur(3px);
-    background:linear-gradient(0deg, rgba(255,160,80,.55), rgba(110,55,30,.28) 65%, transparent 100%);
+    position:absolute; z-index:2; left:50%; bottom:14%;
+    width:10vmax; height:28vmax; margin-left:-5vmax;
+    pointer-events:none; opacity:0; filter:blur(2.5px);
+    background:linear-gradient(0deg,
+      rgba(255,240,190,.85), rgba(255,140,50,.65) 40%,
+      rgba(210,55,20,.4) 72%, transparent 100%);
     border-radius:50% 50% 14% 14% / 26% 26% 8% 8%;
   }
-  .hero-stem.go{ animation:stemRise 2.6s cubic-bezier(.2,.7,.3,1) .22s forwards; }
+  .hero-stem.go{ animation:stemRise 2.8s cubic-bezier(.2,.7,.3,1) .2s forwards; }
   @keyframes stemRise{
-    0%{ opacity:0; transform:scaleY(.25); }
-    30%{ opacity:.7; }
-    100%{ opacity:0; transform:scaleY(1.5) translateY(-7vmax); }
+    0%{ opacity:0; transform:scaleY(.22); }
+    28%{ opacity:.85; }
+    100%{ opacity:0; transform:scaleY(1.6) translateY(-8vmax); }
   }
-  .hero-mushroom{
-    position:absolute; z-index:2; left:50%; bottom:34%;
-    width:42vmax; height:34vmax; margin-left:-21vmax;
-    pointer-events:none; opacity:0; filter:blur(3px);
-    background:radial-gradient(circle at 50% 55%, rgba(255,205,150,.6), rgba(150,80,45,.4) 42%, rgba(90,45,25,.2) 62%, transparent 76%);
+  .hero-mushroom, .hero-mushroom2, .hero-mushroom3{
+    position:absolute; z-index:2; bottom:32%; pointer-events:none; opacity:0; filter:blur(2.5px);
     border-radius:50% 50% 42% 42% / 62% 62% 38% 38%;
+    background:radial-gradient(circle at 50% 58%,
+      rgba(255,246,205,.98) 0%, rgba(255,160,55,.85) 26%,
+      rgba(232,75,20,.65) 48%, rgba(130,28,12,.32) 70%, transparent 85%);
   }
-  .hero-mushroom.go{ animation:mushroomRise 3s cubic-bezier(.2,.7,.3,1) .3s forwards; }
+  .hero-mushroom{ left:50%; width:56vmax; height:44vmax; margin-left:-28vmax; }
+  .hero-mushroom2{ left:38%; width:30vmax; height:25vmax; margin-left:-15vmax; }
+  .hero-mushroom3{ left:63%; width:27vmax; height:23vmax; margin-left:-13.5vmax; }
+  .hero-mushroom.go{ animation:mushroomRise 3.3s cubic-bezier(.2,.7,.3,1) .26s forwards; }
+  .hero-mushroom2.go{ animation:mushroomRise2 3.1s cubic-bezier(.2,.7,.3,1) .4s forwards; }
+  .hero-mushroom3.go{ animation:mushroomRise3 3.2s cubic-bezier(.2,.7,.3,1) .48s forwards; }
   @keyframes mushroomRise{
-    0%{ opacity:0; transform:translateY(9vmax) scale(.3); }
+    0%{ opacity:0; transform:translateY(11vmax) scale(.28); }
+    20%{ opacity:.98; }
+    55%{ opacity:.72; transform:translateY(-17vmax) scale(1.28); }
+    100%{ opacity:0; transform:translateY(-32vmax) scale(1.65); }
+  }
+  @keyframes mushroomRise2{
+    0%{ opacity:0; transform:translateY(9vmax) scale(.25); }
     22%{ opacity:.85; }
-    58%{ opacity:.55; transform:translateY(-13vmax) scale(1.2); }
-    100%{ opacity:0; transform:translateY(-24vmax) scale(1.55); }
+    55%{ opacity:.6; transform:translateY(-14vmax) scale(1.2); }
+    100%{ opacity:0; transform:translateY(-26vmax) scale(1.5); }
+  }
+  @keyframes mushroomRise3{
+    0%{ opacity:0; transform:translateY(10vmax) scale(.22); }
+    22%{ opacity:.8; }
+    55%{ opacity:.55; transform:translateY(-15vmax) scale(1.15); }
+    100%{ opacity:0; transform:translateY(-27vmax) scale(1.45); }
   }
   /* impact rumble on the whole hero */
   @keyframes heroShake{
@@ -243,6 +263,8 @@
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-nuke"></div>
   <div class="hero-mushroom"></div>
+  <div class="hero-mushroom2"></div>
+  <div class="hero-mushroom3"></div>
   <div class="hero-stem"></div>
   <div class="hero-flash"></div>
   <div class="hero-shock"></div>
@@ -295,7 +317,7 @@
     document.querySelector('.hero-title').offsetWidth;
     requestAnimationFrame(function(){
       var hero = document.querySelector('.hero');
-      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3', '.hero-mushroom', '.hero-stem']
+      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3', '.hero-mushroom', '.hero-mushroom2', '.hero-mushroom3', '.hero-stem']
         .forEach(function(sel){ var el = document.querySelector(sel); if (el) el.classList.add('go'); });
       if (hero){
         hero.classList.add('shake');
