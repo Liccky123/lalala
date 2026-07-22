@@ -74,11 +74,22 @@
     28%{ opacity:.92; }
     100%{ opacity:0; transform:scale(3); }
   }
-  /* shockwave ring — a fast expanding rim for extra violence */
+  /* nuclear whiteout — an instantaneous full-hero white blowout, like the initial H-bomb flash */
+  .hero-nuke{ position:absolute; inset:0; z-index:3; pointer-events:none; opacity:0; background:#fff; mix-blend-mode:screen; }
+  .hero-nuke.go{ animation:nukeFlash 1s cubic-bezier(.05,.9,.15,1) forwards; }
+  @keyframes nukeFlash{
+    0%{ opacity:0; }
+    4%{ opacity:1; }
+    16%{ opacity:.62; }
+    40%{ opacity:.14; }
+    100%{ opacity:0; }
+  }
+  /* shockwave rings — three staggered expanding rims for a layered blast-wave */
+  .hero-shock, .hero-shock2, .hero-shock3{
+    position:absolute; z-index:2; left:50%; top:50%; border-radius:50%; pointer-events:none; opacity:0;
+  }
   .hero-shock{
-    position:absolute; z-index:2; left:50%; top:50%;
     width:36vmax; height:36vmax; margin:-18vmax 0 0 -18vmax;
-    border-radius:50%; pointer-events:none; opacity:0;
     border:5px solid rgba(255,170,80,.85);
     box-shadow:0 0 50px 14px rgba(255,120,50,.45);
   }
@@ -87,6 +98,61 @@
     0%{ opacity:.95; transform:scale(.15); border-width:10px; }
     100%{ opacity:0; transform:scale(3.4); border-width:0px; }
   }
+  .hero-shock2{
+    width:30vmax; height:30vmax; margin:-15vmax 0 0 -15vmax;
+    border:3px solid rgba(255,205,150,.7);
+  }
+  .hero-shock2.go{ animation:shockRing2 1.7s cubic-bezier(.1,.7,.25,1) .16s forwards; }
+  @keyframes shockRing2{
+    0%{ opacity:.8; transform:scale(.2); }
+    100%{ opacity:0; transform:scale(5); }
+  }
+  .hero-shock3{
+    width:24vmax; height:24vmax; margin:-12vmax 0 0 -12vmax;
+    border:2px solid rgba(255,230,195,.55);
+  }
+  .hero-shock3.go{ animation:shockRing3 2.3s cubic-bezier(.1,.7,.25,1) .34s forwards; }
+  @keyframes shockRing3{
+    0%{ opacity:.7; transform:scale(.15); }
+    100%{ opacity:0; transform:scale(6.6); }
+  }
+  /* mushroom cloud — a rising, expanding blob of hot smoke, H-bomb signature */
+  .hero-stem{
+    position:absolute; z-index:2; left:50%; bottom:16%;
+    width:7vmax; height:24vmax; margin-left:-3.5vmax;
+    pointer-events:none; opacity:0; filter:blur(3px);
+    background:linear-gradient(0deg, rgba(255,160,80,.55), rgba(110,55,30,.28) 65%, transparent 100%);
+    border-radius:50% 50% 14% 14% / 26% 26% 8% 8%;
+  }
+  .hero-stem.go{ animation:stemRise 2.6s cubic-bezier(.2,.7,.3,1) .22s forwards; }
+  @keyframes stemRise{
+    0%{ opacity:0; transform:scaleY(.25); }
+    30%{ opacity:.7; }
+    100%{ opacity:0; transform:scaleY(1.5) translateY(-7vmax); }
+  }
+  .hero-mushroom{
+    position:absolute; z-index:2; left:50%; bottom:34%;
+    width:42vmax; height:34vmax; margin-left:-21vmax;
+    pointer-events:none; opacity:0; filter:blur(3px);
+    background:radial-gradient(circle at 50% 55%, rgba(255,205,150,.6), rgba(150,80,45,.4) 42%, rgba(90,45,25,.2) 62%, transparent 76%);
+    border-radius:50% 50% 42% 42% / 62% 62% 38% 38%;
+  }
+  .hero-mushroom.go{ animation:mushroomRise 3s cubic-bezier(.2,.7,.3,1) .3s forwards; }
+  @keyframes mushroomRise{
+    0%{ opacity:0; transform:translateY(9vmax) scale(.3); }
+    22%{ opacity:.85; }
+    58%{ opacity:.55; transform:translateY(-13vmax) scale(1.2); }
+    100%{ opacity:0; transform:translateY(-24vmax) scale(1.55); }
+  }
+  /* impact rumble on the whole hero */
+  @keyframes heroShake{
+    0%,100%{ transform:translate3d(0,0,0); }
+    10%,90%{ transform:translate3d(-2px,-1px,0); }
+    20%,80%{ transform:translate3d(4px,2px,0); }
+    30%,50%,70%{ transform:translate3d(-7px,-3px,0); }
+    40%,60%{ transform:translate3d(7px,3px,0); }
+  }
+  .hero.shake{ animation:heroShake .6s cubic-bezier(.36,.07,.19,.97); }
   .hero-sub{
     max-width:60ch; margin-top:20px; font-size:clamp(13.5px,1.7vw,16px); color:#d8dedb;
     opacity:0; transform:translateY(10px);
@@ -154,8 +220,13 @@
 
 <div class="hero">
   <video src="video1.mp4" autoplay muted loop playsinline></video>
+  <div class="hero-nuke"></div>
+  <div class="hero-mushroom"></div>
+  <div class="hero-stem"></div>
   <div class="hero-flash"></div>
   <div class="hero-shock"></div>
+  <div class="hero-shock2"></div>
+  <div class="hero-shock3"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
     <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span><span class="ch">。</span></h1>
@@ -202,10 +273,13 @@
     // force a reflow so the collapsed start state is committed before detonation
     document.querySelector('.hero-title').offsetWidth;
     requestAnimationFrame(function(){
-      var flash = document.querySelector('.hero-flash');
-      var shock = document.querySelector('.hero-shock');
-      if (flash) flash.classList.add('go');
-      if (shock) shock.classList.add('go');
+      var hero = document.querySelector('.hero');
+      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3', '.hero-mushroom', '.hero-stem']
+        .forEach(function(sel){ var el = document.querySelector(sel); if (el) el.classList.add('go'); });
+      if (hero){
+        hero.classList.add('shake');
+        setTimeout(function(){ hero.classList.remove('shake'); }, 650);
+      }
       // PHASE 1 — violent scatter: fast, hot, overshoots size, spins hard
       chars.forEach(function(ch, i){
         var d = data[i];
