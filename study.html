@@ -2,55 +2,626 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>echo43hd — 設計スタディー & コンセプト四コマ</title>
+<title>echo43hd — 設計スタディー記録 & コンセプト四コマ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  :root{ --paper:#0e1318; --paper-line:#232b32; --panel:#151c22; --ink:#e9edec; --ink-soft:#a7b0af; --steel:#7fb0d1;
+  :root{ --paper:#0e1318; --paper-line:#232b32; --panel:#151c22; --ink:#e9edec; --ink-soft:#a7b0af; --ink-faint:#6d7674;
+    --steel:#7fb0d1; --steel-tint:#182732;
     --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
     --sans: -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif; }
-  *{box-sizing:border-box}
-  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);}
+  *{box-sizing:border-box; min-width:0; overflow-wrap:anywhere;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.85; font-size:15.5px;}
   .bar{
     position:sticky; top:0; background:var(--paper); border-bottom:1px solid var(--paper-line);
     padding:14px 20px; display:flex; align-items:center; gap:14px; z-index:5;
   }
   .bar a{color:var(--steel); text-decoration:none; font-family:var(--mono); font-size:13px; font-weight:700;}
   .bar .t{font-size:14px; font-weight:700; color:var(--ink-soft);}
-  .wrap{max-width:1200px; margin:0 auto; padding:24px 16px 100px;}
-  section{margin-top:12px; margin-bottom:70px;}
-  section h2{font-size:19px; font-weight:800; margin:0 0 6px;}
-  .note{font-size:13px; color:var(--ink-soft); margin-bottom:16px;}
-  .note a{color:var(--steel);}
-  .imgbox{
-    overflow:auto; border:1px solid var(--paper-line); background:#05070a;
-    max-height:80vh;
-    -webkit-overflow-scrolling:touch;
+  .wrap{max-width:820px; margin:0 auto; padding:26px 18px 100px;}
+
+  .imgnote{
+    border:1px solid var(--paper-line); background:var(--panel); padding:16px 18px; margin-bottom:40px; font-size:13.5px; color:var(--ink-soft);
   }
-  .imgbox img{display:block; width:auto; max-width:none; height:auto;}
-  .imgbox.comic img{width:1400px;}
-  .hint{font-size:12px; color:#5c6763; margin-top:8px;}
+  .imgnote a{color:var(--steel); font-weight:700;}
+
+  h1{font-size:22px; font-weight:800; margin:0 0 8px; line-height:1.5;}
+  h2{font-size:18px; font-weight:800; margin:44px 0 12px; padding-top:20px; border-top:1px solid var(--paper-line); color:var(--steel);}
+  h2:first-of-type{border-top:none; padding-top:0;}
+  h3{font-size:14px; font-weight:800; margin:26px 0 10px; color:var(--ink-soft);}
+  p{margin:0 0 14px; color:var(--ink); font-size:14.5px;}
+  ul,ol{padding-left:22px; margin:0 0 14px;}
+  li{margin-bottom:8px; font-size:14.5px;}
+  strong{color:#e6c383;}
+  code{font-family:var(--mono); font-size:13px; background:var(--panel); padding:1px 5px; border-radius:3px; color:var(--steel);}
+  hr{border:none; border-top:1px solid var(--paper-line); margin:30px 0;}
+  a{color:var(--steel);}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--paper-line); margin:0 0 20px; -webkit-overflow-scrolling:touch;}
+  table{border-collapse:collapse; width:100%; min-width:560px; font-size:13.5px;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--paper-line); vertical-align:top;}
+  th{background:var(--steel-tint); color:var(--steel); font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.04em; white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  td:first-child{font-family:var(--mono); font-weight:700; color:#e6c383; white-space:nowrap;}
+
+  .scrollhint{font-size:11.5px; color:var(--ink-faint); margin:-12px 0 20px; text-align:right;}
 </style>
 </head>
 <body>
-<div class="bar"><a href="index.html">← 戻る</a><span class="t">02 — 設計スタディー & コンセプト四コマ</span></div>
+<div class="bar"><a href="index.html">← 戻る</a><span class="t">02 — 設計スタディー記録 & コンセプト四コマ</span></div>
 <div class="wrap">
 
-  <section>
-    <h2>設計スタディー全記録</h2>
-    <p class="note">2026-06-15〜07-05、全171イテレーション・各3棟の鳥瞰パース（スムーズ版）。文字が小さいので、<b>画像内をドラッグ/スワイプしてスクロール</b>、PC は Ctrl+スクロールやピンチで拡大してください。 <a href="study_board.jpg" target="_blank">元画像を新しいタブで開く ↗</a></p>
-    <div class="imgbox">
-      <img src="study_board.jpg" alt="echo43hd 設計スタディー全記録（171イテレーション）">
-    </div>
-    <p class="hint">画像サイズ: 4200 × 5939px</p>
-  </section>
+  <div class="imgnote">
+    全171イテレーションを1枚に並べた俯瞰ポスター画像もあります（文字が非常に小さいためPC推奨）。
+    <a href="study_board.jpg" target="_blank">ポスター画像を新しいタブで開く ↗</a><br>
+    以下は同じ内容を、スマホでも読めるテキスト形式でまとめた設計記録です。
+  </div>
 
-  <section>
-    <h2>コンセプト四コマ（HUD版）</h2>
-    <p class="note">当初の提案から現在のコンセプトへどう繋がったかを4コマ漫画で解説。 <a href="yonkoma.png" target="_blank">元画像を新しいタブで開く ↗</a></p>
-    <div class="imgbox comic">
-      <img src="yonkoma.png" alt="echo43hd コンセプト四コマ：当初の提案から現在のコンセプトへ">
-    </div>
-  </section>
+<h1>バイオミミクリー×トポロジー最適化 設計スタディー記録</h1>
+<p>対象期間: 2026-06-15 〜 2026-07-03（現在進行形、最新は <code>run_echo40.py</code>）
+敷地: 3ブロック（west_block / southeast_block / north_block）に塔状建築を配置する設計。
+エンジン: <code>numpy+scipy</code> 自己完結の3Dトポロジー最適化（SIMP+OC、Hex8要素）。</p>
+<p>このファイルは <code>run_*.py</code>（80本、随時増加中）の docstring・CONFIG差分を rimraf 的に読み解いて再構成した
+<strong>設計の系譜</strong>。個々のツール仕様は README_run.md、環境構築は RESUME.md 参照。</p>
+<hr />
+<h2>フェーズ0: エンジン構築（6/15〜6/16）</h2>
+<ul>
+<li><code>topopt3d_studio.py</code>: SIMP+OC の直方体ドメイン版。密度フィルタ・パッシブvoid・接地連結成分抽出を実装。</li>
+<li>スイープ a〜e（風/地震/材料半減/ピロティ条件比較）で検証。ピロティ条件は当初自立せず、
+  外周1列を柱として残す修正で解決（compliance 4.8e14→9.4e10）。</li>
+<li><code>topopt3d_cylinder.py</code> で円筒ドメイン版を追加。<code>--wall</code>（外周構造壁）<code>--minthick</code>（最小部材厚）を導入。</li>
+<li><code>topopt_beso.py</code>: <strong>ここでバイオミミクリーの核となる手法を導入</strong>。
+  普通のTOは剛性最大化だけだと「中実の筒」に収束してしまう（穴を開ける動機がない）ため、
+  <strong>局所体積制約</strong>（<code>alpha</code> = どの近傍も一定密度以上は埋めない）を追加して強制的に多孔質＝骨梁状にする
+  （Wu et al. の bone-like porous 手法）。<code>--method bone_infill</code>（既定）と進化的 <code>--method beso</code> の2系統。
+  連続シェルモード（<code>--shell</code>, dome/silo/hyperboloid）も追加、薄皮に開口を自動生成。</li>
+</ul>
+<h2>フェーズ1: 敷地への実装（6/18〜6/20）</h2>
+<ul>
+<li><code>run_site_towers.py</code>: 各ブロックの最大内接円に円筒タワーを配置（フォームは既存のまま敷地にはめ込む発想）。</li>
+<li><code>run_site.py</code>: <strong>円形をやめ、敷地の実ポリゴンをそのままフットプリントに採用</strong>。<code>bone_infill</code>＋
+  <code>hollow_perim_m</code>（外周殻厚）でブロックごとに違う個性（西＝細長、南東＝ずんぐり、北＝先細り）を持たせる。</li>
+<li><code>run_compare.py</code>: 曲面シルエット版（wave/bulge/domecap）の比較案。壁を薄くして内部を開放。</li>
+<li><code>run_tall.py</code>: 方向転換 — 「多孔質の塊」から<strong>60m級の細身ダイアグリッド塔</strong>へ。8方向水平荷重で
+  外周に斜めブレースを自動生成、footprint を60%に絞って細身化。</li>
+<li><code>run_eroded.py</code>: 侵食した一枚岩（大理石調）のイメージを参照。<code>r_local</code>拡大＋高解像度で薄壁2ボクセル、
+  <code>marble</code>レンダリングと<code>hollow_void_min</code>（内部voidの最低確保）を追加。</li>
+<li><code>run_blocky.py</code>: あえてスムージングせずボクセル感を残す「ゴツゴツ」路線。粗いメッシュ(<code>elem_m=2.2</code>)。</li>
+<li><code>run_towers.py</code>: 実用プログラムを想定し中央エレベーターコアを固定ソリッドで追加、高さ72〜84mへ。</li>
+<li><code>run_shell.py</code>: <strong>コアを撤去</strong>し外周構造壁のみで全荷重を支える方針に回帰。開口はTOが自動で刻む。</li>
+</ul>
+<h2>フェーズ2: 材料最小化・エクソスケルトン（6/20〜6/22）</h2>
+<ul>
+<li><code>run_lean.py</code>: shell案をさらに材料削減（volfrac 0.32→0.24）、薄さの限界を検証。</li>
+<li><code>run_exo.py</code>: 「オプションB」— 断面全体を設計領域にする真のTOでエクソスケルトン格子を生成。
+  以降のスクリプトが共通で使う <code>run_box</code>（最大内接正方形フットプリント）ユーティリティが初登場。</li>
+<li><code>run_chunk.py</code> / <code>run_stack.py</code>: 参照画像ベースの塊状・キュビズム的な積層マッシング実験
+  （<code>run_stack.py</code>はTOではなく純粋な手続き型スタッキング、TOドメインへの転用を将来課題として明記）。</li>
+<li><code>run_opt.py</code>: 「要件クリーン版」— 正方形フットプリント＋bone_infill＋構造検証＋薄壁薄床の最小構成に整理。</li>
+<li><code>run_fx.py</code>: 「200年後の建築」— volfrac0.15・10方向荷重で骨格まで削ぎ落とす過激版。</li>
+<li><code>run_design.py</code> / <code>run_edge.py</code>: 「設計者の自由選択」路線。各塔に別個性（ファイン・ダイアグリッド／
+  ねじれブレース／分割ピロティ+テーパー）を与え、edge でさらに細く・軽く・高く(104m)推し進める。</li>
+<li><code>run_canopy.py</code>: 頂部に固定ドーム/コーン屋根を追加し、屋根荷重で<strong>枝分かれする樹木状の柱</strong>を誘発
+  （バイオミミクリー的な「キャノピー幹」形状）。</li>
+</ul>
+<h2>フェーズ3: バイオミミクリー総合・ポッド導入（6/24〜6/26）</h2>
+<ul>
+<li><code>run_bio.py</code>: <strong>「ポッド」導入</strong> — プログラム上の部屋を表す固定ソリッド塊を高さ方向にランダム配置し、
+  TOがそれらを繋ぐ枝分かれ構造を生成。低いドーム屋根＋小さな基壇。</li>
+<li><code>run_spire.py</code> / <code>run_spireh.py</code>: ogive（先細り）テーパーで頂部が尖る「尖塔」形状。spireh で
+  3塔の高さ差を明確化（110/82/58m）。</li>
+<li><code>run_asym.py</code>: 対称性を崩す — 片側風荷重＋荷重方向を3に削減、ポッドを螺旋状配置。</li>
+<li><code>run_flow.py</code>: 収束フォーム＋内部を大きく開放（volfrac0.14）、部分スムーズ／ボクセル併用出力を初導入。</li>
+<li><code>run_pods.py</code>: flowで一旦消したポッドを復活、「滑らかな骨格＋角ばったポッド部屋」のハイブリッド表現を確立。</li>
+<li><code>run_roots.py</code>: 固定基壇をやめ、<strong>TO自体が根/ピロティ状の脚を地面まで伸ばす</strong>よう変更（真の生物模倣）。</li>
+<li><code>run_foot.py</code>: 根の脚をやめ、裾広がりの固定フレア基部（<code>base_flare_m</code>）に変更。</li>
+<li><code>run_tip.py</code>: 屋根を完全撤去し、収束フォームが自然に尖って終わる「理想形」を追求。</li>
+<li><code>run_room.py</code>: tip形状に実プログラムを付与 — 外周殻＋床スラブでホロー内部を確保（volfrac0.45に増加）。</li>
+<li><code>run_kumiki.py</code>: roomにさらに大きく複数のブロック状ポッド（組木モチーフ）を追加。</li>
+<li><code>run_shells.py</code>: 別系統の実験 — TOではなく中空箱の手続き的積層を3スタイル（A立方体的/B収束/C捻れ）で比較、
+  それぞれ構造検証つき。</li>
+<li><code>run_tipf.py</code>: tip理想形に<strong>内部床スラブ</strong>を統合（外皮は乱さず<code>floor_inset_m</code>で内側に後退）— この系譜の
+  一つの統合形。</li>
+</ul>
+<h2>フェーズ4: シェル構造とタワー間の「呼応」（6/27〜6/28）</h2>
+<ul>
+<li><code>run_fit.py</code>: 敷地に対しフットプリントを回転させて最大化（<code>largest_rotated_square</code>）、3塔の高さ差を縮小
+  （92/87/82m）。tipf理想形の基準版。</li>
+<li><code>run_shellpure.py</code>: 「純粋シェル」概念 — 設計領域を外周帯（<code>hollow_perim_m</code>）に限定した中空塔＋
+  フルスパン床。volfrac0.45で連続殻を確保。</li>
+<li><code>run_shellfat.py</code>: 殻を「太く、敷地境界を超えてよい」方針に変更（<code>SQUARE_SCALE=1.40</code>）。テーパーも
+  全高ogiveから「上部のみ収束」(<code>uppertaper</code>)に変更。</li>
+<li><code>run_shellgap.py</code>: 3塔に個別の太さ(<code>SCALE</code>辞書)を与えつつ最低クリアランス(≈4m)を<code>_gapcheck2.py</code>で検証
+  ——ブロックごとのSCALE辞書の初出。</li>
+<li><strong><code>run_echo.py</code></strong>: <strong>「呼応（echo）」概念の初登場</strong>。各塔のポッドを隣接タワーとの隙間に面した位置へ配置し、
+  高さも互い違いにすることで、塔同士が視覚的に「呼応する」ようにした。以降 <code>echo</code> シリーズと命名。</li>
+</ul>
+<h2>フェーズ5: echoシリーズの反復進化（6/28〜7/2）</h2>
+<p>一貫したテーマ: ①敷地境界内での有機的フットプリント（BLOB: 楕円+うねり+ローブ数）、②表面の生物的
+テクスチャ（bump/meander/twist）、③タワー間の関係性言語（lean=傾き寄せ／同位相うねり／捻れ）、
+④構造的な弱点（頂部の首折れ、タワー間衝突）への対処、⑤最終的に「本物のTO」への回帰。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Run</th>
+<th>主な変更</th>
+<th>狙い/理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>echo2</td>
+<td>テーパー強化（taper_start↓, taper_pow導入）</td>
+<td>収束をもっと視認できるように</td>
+</tr>
+<tr>
+<td>echo3</td>
+<td>テーパーをogiveに統一</td>
+<td>fit案と収束スタイルを揃える</td>
+</tr>
+<tr>
+<td>echo4</td>
+<td>全体を細く、テーパー強化</td>
+<td>「スリムな尖塔」路線</td>
+</tr>
+<tr>
+<td>echo5</td>
+<td><strong>BLOB導入</strong>（最大内接楕円+うねり）</td>
+<td>角のある正方形をやめ有機的平面へ</td>
+</tr>
+<tr>
+<td>run_box</td>
+<td>（別系統の基準案、site充填の直方体塔）</td>
+<td>echo系が共通利用する最大正方形ヘルパーを提供</td>
+</tr>
+<tr>
+<td>echo6</td>
+<td>BLOBのうねり・偏平率を大胆に強化</td>
+<td>花弁/レンズ/花状の平面を狙う</td>
+</tr>
+<tr>
+<td>echo7</td>
+<td>ボリューム増・解像度↑・殻厚↑</td>
+<td>echo6の「床が浮いて見える」不具合を解消</td>
+</tr>
+<tr>
+<td>echo8</td>
+<td><strong>bump系パラメータ導入</strong>（高さ×角度で半径を変調）</td>
+<td>表面にうねる質感</td>
+</tr>
+<tr>
+<td>echo9</td>
+<td><strong>窓開口(openings)グリッド導入</strong></td>
+<td>ピア/スパンドレル/床を保ちつつ開口</td>
+</tr>
+<tr>
+<td>echo10-11</td>
+<td>全塔を大幅に太く</td>
+<td>塔の存在感強化、クリアランス再検証</td>
+</tr>
+<tr>
+<td>echo12</td>
+<td>南東塔を丸く太く、高さ差を明確化(104/92/80m)</td>
+<td>見た目の細さを是正</td>
+</tr>
+<tr>
+<td>echo13</td>
+<td>窓乱数化、crown_m/taper_min導入</td>
+<td>上部の「切断されて見える」不具合対処</td>
+</tr>
+<tr>
+<td>echo14</td>
+<td><strong>頂部の首折れ（1-2セル幅）構造欠陥への対処</strong>：solid_top導入</td>
+<td>構造的破断リスクの解消</td>
+</tr>
+<tr>
+<td>echo15</td>
+<td>solid_topを撤回し、高解像度・厚殻・弱テーパーで根本対処</td>
+<td>「構造的に健全な版」と明記</td>
+</tr>
+<tr>
+<td>echo16</td>
+<td><strong>LEAN導入</strong>（各塔頂部を共通重心へ寄せる）</td>
+<td>一つの構成として読める関係性</td>
+</tr>
+<tr>
+<td>echo16f</td>
+<td>（echo16をimportし elem_m だけ変更）</td>
+<td>高速プレビュー用、設計変更なし</td>
+</tr>
+<tr>
+<td>echo17</td>
+<td>leanを弱め(8→4m)、解像度を粗く</td>
+<td>ボクセル感重視、塔をより独立させる</td>
+</tr>
+<tr>
+<td>echo18</td>
+<td>さらに粗く、leanさらに弱め、南東を増量</td>
+<td>クリアランス限界に対する調整</td>
+</tr>
+<tr>
+<td>echo19</td>
+<td><strong>bump強化+twist導入</strong>（ぐにゃぐにゃ路線）</td>
+<td>「もぞもぞ」した質感、leanも再強化</td>
+</tr>
+<tr>
+<td>echo20</td>
+<td><strong>meander導入</strong>（中心軸自体が蛇行）</td>
+<td>表面だけでなく軸そのものを有機的に</td>
+</tr>
+<tr>
+<td>echo21</td>
+<td><strong>meanderを同位相化</strong>（全塔で揺れの向きを揃える）</td>
+<td>衝突回避と「共に揺れる」関係性の両立</td>
+</tr>
+<tr>
+<td>echo22</td>
+<td>meander振幅を落とし位相角調整</td>
+<td>より控えめな揺れへ</td>
+</tr>
+<tr>
+<td>echo23</td>
+<td>3塔を明確に別形状に（ogive/bulge/teardrop）</td>
+<td>個性の強調</td>
+</tr>
+<tr>
+<td>echo24</td>
+<td><strong>gooeyをやめ twist_deg 導入</strong>（各階を回転）</td>
+<td>「未来的」路線へ転換、bump/meander/leanに代わる統一言語</td>
+</tr>
+<tr>
+<td>echo25</td>
+<td><strong>hollow_perim_m=0 — 断面全体を再びTO設計領域に</strong></td>
+<td>「魚の骨」に見える不具合を、本物のTOによる自然な多孔化で解消</td>
+</tr>
+<tr>
+<td>echo26</td>
+<td>収束強化・出力を角ばり寄りに・部材連続性向上</td>
+<td>見た目と構造の両立を調整</td>
+</tr>
+<tr>
+<td>echo27</td>
+<td>敷地超過を許容し塔ごとに別シルエット+捻れ角</td>
+<td>大胆さと個性の両立</td>
+</tr>
+<tr>
+<td>echo28</td>
+<td>3塔の太さを均等化、<strong>taper_steps=4（段状収束）</strong>導入</td>
+<td>円錐状の収束からスタック状のセットバックへ、より結晶的な印象に</td>
+</tr>
+<tr>
+<td>echo29</td>
+<td>段状セットバックを明確化、taper_min緩和</td>
+<td>西・北の形をはっきりさせ、尖りすぎを解消</td>
+</tr>
+<tr>
+<td>echo30(a/b/c)</td>
+<td><strong>内部空間の作り方を3案比較</strong>：a=外殻+中空(殻連続)／b=骨組み間引き(volfrac0.28)／c=局所制約ボーン(alpha_local)</td>
+<td>どの多孔化方式が見た目・構造とも最良か検証</td>
+</tr>
+<tr>
+<td>echo31</td>
+<td>床insetを縮小・殻厚4mに変更</td>
+<td>1フロアあたりの有効面積を拡大</td>
+</tr>
+<tr>
+<td>echo32</td>
+<td>平面を丸め、立面をogive曲線+微メアンダー化</td>
+<td>角ばりを抑え、丸みのある曲線立面へ</td>
+</tr>
+<tr>
+<td>echo33</td>
+<td>帯（バンド）ごとに片持ちズレ+ノッチを追加</td>
+<td>積層模型のような質感を演出</td>
+</tr>
+<tr>
+<td>echo34</td>
+<td>echo33タワーに橋(ブリッジ)を統合（検証・アセンブル用のalias、新規設計なし）</td>
+<td>3棟を橋で繋いだ状態の構造検証</td>
+</tr>
+<tr>
+<td>echo35</td>
+<td><strong>3棟を重心軸周りに同角度(40°)剛体回転させ「三つ編み」状に</strong>（棟間距離=ボイドは維持）</td>
+<td>群体としての絡み合い・スワールを表現する新概念</td>
+</tr>
+<tr>
+<td>echo36</td>
+<td>「渋谷実施版」— echo35の構造欠陥（北棟が高さ69〜75%で支持のない片持ちになる）をswirl_fade0.68/jog_fade0.62（上層ほど回転量を減衰）+crown7mで解消、実効回転角は30°に緩和</td>
+<td>見た目の絡み合いを保ったまま構造的に自立させる</td>
+</tr>
+<tr>
+<td>echo37</td>
+<td><strong>外周に固定ソリッドのマリオン（ピア）8本を追加</strong>（断面のローカル角度で定義、テーパー/ツイストに追従）</td>
+<td>echo36で残っていた「TOが壁を削りすぎて床がぶら下がる」構造欠陥（応力比14.1）を解消</td>
+</tr>
+<tr>
+<td>echo38</td>
+<td>echo37と実質同内容、prefixをecho38として正式に確定・整理</td>
+<td>マリオン版を以後の基準として固定</td>
+</tr>
+<tr>
+<td>echo39</td>
+<td><strong>ランダムな窓開口を導入</strong>（周方向×高さのグリッドをprob=0.72で間引き、位置/サイズにジッター）。ピア・床・冠・基部などの構造部材は<code>structmask</code>で保護し開口対象から除外</td>
+<td>単なる多孔質の塊から、窓のある「建物らしさ」へ</td>
+</tr>
+<tr>
+<td>┗ echo39b〜t（17分枝）</td>
+<td>同じecho39のTO結果を<code>assemble_smooth.py</code>のパラメータ違い（grow/sigma/skin/sharp/notch/window/glass等）で繰り返し再メッシュ化・再レンダー</td>
+<td>新しい最適化ではなく、窓・開口・滑らかさの仕上げ方を探る詳細検討ブランチ（→下記参照）</td>
+</tr>
+<tr>
+<td>echo40</td>
+<td>echo39と同構成、窓の間引き確率のみ prob 0.72→0.80 に増加</td>
+<td>開口をより多く・疎にし、軽やかな印象に</td>
+</tr>
+<tr>
+<td>┗ echo40b〜u（18分枝）</td>
+<td>echo39分枝と同様、echo40のTO結果をパラメータ違いで繰り返し再メッシュ化・再レンダー</td>
+<td>同上（詳細検討ブランチ）</td>
+</tr>
+<tr>
+<td>echo41</td>
+<td>echo38(マリオン8本)+ランダム窓+構造部レイヤ分けを再整理・確定（内容はecho40とほぼ同一）</td>
+<td>窓入りマリオン版を正式な基準として再度固定</td>
+</tr>
+<tr>
+<td>echo42</td>
+<td>echo41と同構成、BLOB形状を微調整（北棟の平面をより丸く: ar0.88→0.90）</td>
+<td>北棟の平面形状を微修正</td>
+</tr>
+<tr>
+<td>┗ echo42b</td>
+<td>echo42の派生（詳細未検証）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>echo43</td>
+<td>echo41/42と実質同構成の再確定版</td>
+<td>次の夜間HD解析・プリント検討のための基準を固定</td>
+</tr>
+<tr>
+<td>┗ echo43hd</td>
+<td>夜間HD解析（<code>night_detail.py</code>, elem2.0/iters70で3棟再計算）+5点検証（per-z分離/床面積/監査/支持率/応力）済み版</td>
+<td>高精細版での構造健全性の最終確認</td>
+</tr>
+<tr>
+<td>echo44</td>
+<td>echo43hdを踏まえた確定版。<strong><code>make_print_stl.py</code>で1:200スケールの3Dプリント用STLを初めて書き出し</strong></td>
+<td>ビルドプレート256mm・帯ジョグ(10m刻み)継ぎ目の3分割水密STL、模型化フェーズへ移行</td>
+</tr>
+</tbody>
+</table></div>
+<h3>echo39/echo40 分枝（詳細検討ブランチ）について</h3>
+<p><code>echo39b</code>〜<code>t</code>（17件）・<code>echo40b</code>〜<code>u</code>（18件）は、<strong>新しいトポロジー最適化を回したものではない</strong>。
+どちらも同じ<code>echo39</code>/<code>echo40</code>の密度データ（<code>density_echo39_*.npz</code>/<code>density_echo40_*.npz</code>）を、
+<code>assemble_smooth.py</code>に異なる引数（<code>--grow</code>滑らか化前の膨張量、<code>--sigma</code>ガウシアン強度、
+<code>--skin</code>（TO結果 kept か設計エンベロープか）、<code>--sharp</code>/<code>--notch</code>/<code>--window</code>/<code>--glass</code>/<code>--toholes</code>/
+<code>--tothrough</code>など開口の彫り方）を与えて繰り返し再メッシュ化・再レンダーした<strong>同一モデルの仕上げ違い</strong>の
+束。対話的にコマンドを打って試した結果らしく、各文字が具体的に何を変えたかを記録したログは残っていない
+（<code>night_queue.txt</code>/<code>night_detail.py</code>は別系統で<code>{prefix}hd</code>という別名を使うため、この分枝群とは無関係）。
+観察できる手がかりとしては: <code>echo39f</code>は<code>_cutaway.png</code>/<code>_plan.png</code>（断面・平面を詳しく確認）、
+<code>echo39i</code>/<code>j</code>・<code>echo40c</code>〜<code>k</code>/<code>g</code>〜<code>u</code>は<code>_angles.png</code>（見た目チェック）、<code>echo40n</code>は<code>_design.png</code>
+（窓パターンのデザイン検討）を伴っており、<strong>開口の見え方・滑らかさ・断面構成を仕上げの段階で
+繰り返し調整していた</strong>ことが読み取れる。</p>
+<hr />
+<h2>フェーズ6: 夜間自動バリエーション生成（echo45〜75、7/05）</h2>
+<p><code>echo44</code>のプリント準備を境に、手動で1本ずつ調整する形から、<strong><code>night_variants.py</code>〜<code>night_variants5.py</code>
+という夜間バッチスクリプト群が毎晩複数バリエーションを自動生成する運用</strong>に移行。「10個以上、毎回違う形」
+（<code>night_variants5.py</code>のdocstringより）という方針のもと、body_curve（形状の基本カーブ）・BLOB（平面形状）・
+段差・彫り込み・蛇行・ポッド配置などを組み合わせて多様な派生を量産している。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Run</th>
+<th>主な変更</th>
+<th>狙い/理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>echo45</td>
+<td>深い絡み（スワール強化）</td>
+<td>echo44から続く群体表現のバリエーション</td>
+</tr>
+<tr>
+<td>echo46</td>
+<td>細かい開口（echo44のTO結果を再利用、design_windowsのみ変更）</td>
+<td>再計算なしで開口パターンだけ検討</td>
+</tr>
+<tr>
+<td>echo47</td>
+<td>鋭い段差</td>
+<td>セットバックのシャープさを強調</td>
+</tr>
+<tr>
+<td>echo48</td>
+<td>骨格を魅せる</td>
+<td>構造部材そのものを見せる方向性</td>
+</tr>
+<tr>
+<td>echo49</td>
+<td>蕾/炎型ティアドロップ採用、taper_min0.40で頂部を鋭く絞る</td>
+<td>新形状シリーズの第1弾</td>
+</tr>
+<tr>
+<td>echo50</td>
+<td>echo49の頂部浮遊材料をtaper_min0.58に戻して解消</td>
+<td>ティアドロップ頂部の千切れ修正</td>
+</tr>
+<tr>
+<td>echo51</td>
+<td>高さ方向2箇所くびれる正弦波(wave)形状</td>
+<td>竹の節シリーズ第1弾、頂部千切れ再発防止</td>
+</tr>
+<tr>
+<td>echo52</td>
+<td>ドーム断面(domecap)で柔らかく丸く収束</td>
+<td>丸い頂部シリーズ第2弾、taper_min頼らず安全域確保</td>
+</tr>
+<tr>
+<td>echo53</td>
+<td>echo50形状継承、jog/notch増量</td>
+<td>彫り込み強化・激ジョグで多孔質感を強調</td>
+</tr>
+<tr>
+<td>echo54</td>
+<td>wave構造補強版</td>
+<td>echo51系の構造強化</td>
+</tr>
+<tr>
+<td>echo55</td>
+<td>彫り込み抑制版</td>
+<td>開口を減らし安定性重視</td>
+</tr>
+<tr>
+<td>echo56</td>
+<td>樽型(bulge)</td>
+<td>新シルエット</td>
+</tr>
+<tr>
+<td>echo57</td>
+<td>echo55の南東棟接続性修正版</td>
+<td>構造欠陥の解消</td>
+</tr>
+<tr>
+<td>echo58</td>
+<td>echo56の根元応力修正版</td>
+<td>樽型の根元補強</td>
+</tr>
+<tr>
+<td>echo59</td>
+<td>domecap+lobes6(花弁状)+ar0.75(細長く)</td>
+<td><strong>史上初の全棟支持PASS</strong>、平面形状を大きく変える新シリーズ</td>
+</tr>
+<tr>
+<td>echo60</td>
+<td>内部ポッド3箇所に再構成(domecap+3ポッド)</td>
+<td>プログラム配置の再検討</td>
+</tr>
+<tr>
+<td>echo61</td>
+<td>echo59の床面積改善版(ar0.75→0.82)</td>
+<td>有効面積の拡大</td>
+</tr>
+<tr>
+<td>echo62</td>
+<td>echo59系の花弁平面のまま段差を大幅増</td>
+<td>結晶的ファセット感の強調</td>
+</tr>
+<tr>
+<td>echo63</td>
+<td>echo59系の花弁平面+domecapのまま3棟の高さを非対称化</td>
+<td>スカイライン構成の検討</td>
+</tr>
+<tr>
+<td>echo64</td>
+<td>echo58(樽型)の根元応力に再挑戦、ピア大幅増強</td>
+<td>構造欠陥への再挑戦</td>
+</tr>
+<tr>
+<td>echo65</td>
+<td>蛇行幹+ボコボコ皮膚</td>
+<td>新テクスチャの組み合わせ</td>
+</tr>
+<tr>
+<td>echo66</td>
+<td>echo65のクリアランス修正版</td>
+<td>棟間クリアランス欠陥の解消</td>
+</tr>
+<tr>
+<td>echo67</td>
+<td>domecap+蛇行+ボコボコ</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo68</td>
+<td>非対称スカイライン(echo63)+蛇行+ボコボコ</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo69</td>
+<td>樽型(bulge)+蛇行「彷徨う瓢箪」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo70</td>
+<td>竹の節(wave)+強いボコボコ「珊瑚の竹」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo71</td>
+<td>domecap+極端な段差(9-10段)「結晶の巨石」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo72</td>
+<td>花弁9枚+細長い平面「アネモネ」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo73</td>
+<td>ポッド4箇所+多ノッチ「蜂の巣」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo74</td>
+<td>重い彫り込み+激ジョグ「廃墟」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+<tr>
+<td>echo75（最新）</td>
+<td>高頻度蛇行(2.5周)「螺旋の蛇」</td>
+<td>組み合わせバリエーション</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>現在地点（2026-07-05時点）</h2>
+<p>最新は <code>run_echo75.py</code>。<code>echo41</code>〜<code>43</code>は窓入りマリオン版の再確定・微調整、<code>echo43hd</code>は夜間HD解析、
+<code>echo44</code>で初めて3Dプリント用STLを書き出し。<code>echo45</code>以降は<code>night_variants.py</code>〜<code>night_variants5.py</code>
+による<strong>夜間自動バリエーション生成</strong>フェーズで、body_curve（teardrop/wave/domecap/bulge等）・BLOB平面・
+段差・彫り込み・蛇行・ポッド配置を組み合わせた多様な派生を毎晩量産中（<code>echo59</code>で史上初の全棟支持PASSを達成）。
+到達している設計言語:
+- 断面全体を設計領域にした真のTO（SIMP、局所体積制約なしのbone_infillではなくsimp+pnorm）で
+  骨格状の開口を自動生成（echo25以降）。
+- 3塔で異なるBLOB平面・テーパースタイル・捻れ角を持ちつつ、太さは均等化。
+- 収束は円錐状ではなく <code>taper_steps=4</code> の段状セットバック（echo28〜）から、帯ごとの片持ちズレ+ノッチ
+  （echo33）を経て、<strong>3棟を重心軸周りに剛体回転させた「三つ編み(スワール)」</strong>（echo35〜）という
+  群体表現に発展。
+- スワールで生じた構造欠陥（片持ち・壁が薄すぎて床がぶら下がる）は、上層減衰(swirl_fade/jog_fade)+crown
+  （echo36）、外周固定マリオン8本（echo37〜38）で解消。
+- 開口はグリッド窓（echo9系）や本物のTO由来の穴（echo25〜）に加え、<strong>structmaskで構造部材を保護しつつ
+  ランダムな窓を切る</strong>方式（echo39〜40）が最新。
+- タワー間クリアランスは常時検証（<code>_gapcheck</code>系スクリプト群）、頂部の首折れ・浮遊床など構造欠陥は
+  echo13〜15で一度解決済み。
+- <strong>echo44で設計スタディーから物理模型化フェーズへ移行</strong>: <code>make_print_stl.py</code>が1:200スケールの
+  水密STLを棟ごとに帯ジョグ(10m刻み)継ぎ目で3分割し、256mmビルドプレートに収める。建築と同じ
+  中空シェル構成（外壁+床スラブ+設計開口）のまま出力するため、内部に添景を置ける模型になる。</p>
+<h2>繰り返し出てきた課題と解決パターン</h2>
+<ol>
+<li><strong>頂部の首折れ（構造断絶）</strong>: echo13〜15で発生・対処。solid_top（重い）→高解像度+厚殻+弱テーパー
+   （echo15）で解決。</li>
+<li><strong>タワー間の衝突/近すぎ</strong>: shellgap以降 <code>_gapcheck*.py</code> で毎回クリアランス検証。echo21で
+   「同位相うねり」により衝突回避と一体感を両立。</li>
+<li><strong>「魚の骨」に見える見た目</strong>: 窓グリッド開口方式の限界として echo24末〜25初に顕在化、
+   断面全体TOへの回帰（echo25）で解消。</li>
+<li><strong>敷地内 vs 敷地超過</strong>: shellfat(1.40倍許容)→asym以降でSQUARE_SCALE=0.90に収める→echo27で
+   再度超過許容、という揺れが継続中。</li>
+<li><strong>群体回転(スワール)による片持ち構造欠陥</strong>: echo35で3棟を剛体回転させた際、上層で支持のない
+   片持ちが発生（応力比14.1まで悪化）。echo36で上層ほど回転量を減衰させるswirl_fade/jog_fade+crown、
+   echo37〜38で外周固定マリオン8本を追加し解決。「見た目の絡み合いを保ったまま自立させる」という、
+   echo13〜15の首折れ対処と同型の課題。</li>
+</ol>
+<h2>未文書化だった理由</h2>
+<p>git管理外（<code>topopt3d</code>はコミットされていない）で、各 <code>run_*.py</code> の docstring 以外に経緯を記録した
+場所が無かったため。本ファイルは73本のスクリプトの docstring/CONFIG差分を機械的に読み解いて再構成した
+もの。今後の run スクリプトを追加した際は、このファイルの表に1行足す運用を推奨。</p>
+
+  <h2 id="comic">コンセプト四コマ（HUD版）</h2>
+  <p>当初の提案から現在のコンセプトへどう繋がったかを4コマ漫画で解説。</p>
+  <div style="overflow:auto; border:1px solid var(--paper-line); background:#05070a; max-height:80vh; -webkit-overflow-scrolling:touch;">
+    <img src="yonkoma.png" alt="echo43hd コンセプト四コマ" style="display:block; width:1000px; max-width:none; height:auto;">
+  </div>
+  <p class="scrollhint">画像内をドラッグ/スワイプしてスクロール。<a href="yonkoma.png" target="_blank">新しいタブで開く ↗</a></p>
 
 </div>
 </body>
