@@ -30,7 +30,9 @@
   .hero video{
     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     filter:saturate(1.08) contrast(1.05) brightness(.72);
+    transform:scale(1.08); will-change:transform; transition:filter .3s ease;
   }
+  .hero-content, .hero-scroll{ will-change:transform, opacity; }
   .hero::after{
     content:""; position:absolute; inset:0; z-index:1;
     background:
@@ -83,16 +85,39 @@
   .section-eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--steel); font-weight:700; margin-bottom:10px;}
   .sub{color:var(--ink-soft); font-size:14.5px; max-width:56ch;}
 
+  /* ---- reveal: subtle load-in nudge; content is ALWAYS visible (opacity never goes below 1) ---- */
+  .reveal{animation:nudgeIn .8s cubic-bezier(.16,.8,.3,1) backwards; animation-delay:var(--rd,0s);}
+  @keyframes nudgeIn{ from{ opacity:.001; transform:translateY(14px); } }
+  @media (prefers-reduced-motion: reduce){ .reveal{animation:none;} }
+
+  /* ---- stat strip ---- */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:44px; background:var(--paper-line); border:1px solid var(--paper-line);}
+  .stat{background:var(--paper); padding:20px 14px; text-align:center;}
+  .stat .num{font-family:var(--mono); font-size:clamp(24px,4vw,34px); font-weight:800; color:var(--steel); letter-spacing:-.02em; font-variant-numeric:tabular-nums;}
+  .stat .lbl{font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--ink-faint); text-transform:uppercase; margin-top:4px;}
+  @media (max-width:560px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
   .videos{display:grid; gap:16px; margin-top:28px; grid-template-columns:1fr 1fr;}
   .videos video{width:100%; display:block; background:#000; border:1px solid var(--paper-line);}
   @media (max-width:640px){ .videos{grid-template-columns:1fr;} }
 
   .cards{display:grid; gap:16px; margin-top:44px;}
   a.card{
-    display:block; text-decoration:none; color:inherit; border:1px solid var(--paper-line);
-    background:var(--panel); padding:22px 24px; transition:border-color .15s ease;
+    position:relative; display:block; overflow:hidden; text-decoration:none; color:inherit;
+    border:1px solid var(--paper-line); background:var(--panel); padding:22px 24px;
+    transition:border-color .25s ease, transform .35s cubic-bezier(.16,.8,.3,1), box-shadow .35s ease;
   }
-  a.card:hover{border-color:var(--steel);}
+  a.card::before{
+    content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(115deg, transparent 30%, rgba(127,176,209,.14) 48%, transparent 66%);
+    transform:translateX(-120%); transition:transform .7s cubic-bezier(.16,.8,.3,1);
+  }
+  a.card:hover{
+    border-color:var(--steel); transform:translateY(-6px);
+    box-shadow:0 18px 34px rgba(0,0,0,.28);
+  }
+  a.card:hover::before{ transform:translateX(120%); }
+  .card *{position:relative; z-index:1;}
   .card .n{font-family:var(--mono); font-size:11px; color:var(--steel); font-weight:700; letter-spacing:.08em;}
   .card h2{font-size:18px; font-weight:800; margin:8px 0 6px;}
   .card p{font-size:13.5px; color:var(--ink-soft); margin:0;}
@@ -111,12 +136,20 @@
   <div class="hero-scroll"><span class="ln"></span>SCROLL</div>
 </div>
 
-<div class="wrap">
-  <div class="section-eyebrow">Preview</div>
-  <div class="sub">実際のTO計算から生成した3棟を、街並みに重ねたビジュアライズ。</div>
+<div class="wrap" id="below">
+  <div class="section-eyebrow reveal">Preview</div>
+  <div class="sub reveal">実際のTO計算から生成した3棟を、街並みに重ねたビジュアライズ。</div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num" data-count="171">171</div><div class="lbl">Iterations</div></div>
+    <div class="stat"><div class="num" data-count="3">3</div><div class="lbl">Sites</div></div>
+    <div class="stat"><div class="num" data-count="4">4</div><div class="lbl">Verifications</div></div>
+    <div class="stat"><div class="num" data-count="10">10</div><div class="lbl">Q&amp;A</div></div>
+  </div>
+
   <div class="videos">
-    <video src="video1.mp4" controls playsinline preload="metadata"></video>
-    <video src="video2.mp4" controls playsinline preload="metadata"></video>
+    <video src="video1.mp4" autoplay muted loop controls playsinline preload="auto"></video>
+    <video src="video2.mp4" autoplay muted loop controls playsinline preload="auto"></video>
   </div>
 
   <div class="cards">
@@ -134,5 +167,53 @@
 
   <footer>ECHO43HD PROJECT ARCHIVE</footer>
 </div>
+
+<script>
+(function(){
+  // stagger the load-in animation (purely cosmetic — if this never runs, elements are still visible via CSS animation)
+  document.querySelectorAll('.reveal').forEach(function(el, i){
+    el.style.setProperty('--rd', (Math.min(i, 8) * 0.07) + 's');
+  });
+
+  // count-up stats (HTML already shows the real number as a static fallback)
+  var nums = document.querySelectorAll('.stat .num');
+  var counted = new WeakSet();
+  var io2 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting || counted.has(e.target)) return;
+      counted.add(e.target);
+      var target = parseInt(e.target.getAttribute('data-count'), 10);
+      var start = performance.now(), dur = 1100;
+      function step(t){
+        var p = Math.min(1, (t - start) / dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        e.target.textContent = Math.round(eased * target);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, {threshold:.5});
+  nums.forEach(function(n){ n.textContent = n.getAttribute('data-count'); io2.observe(n); });
+
+  // hero parallax
+  var heroVideo = document.querySelector('.hero video');
+  var heroContent = document.querySelector('.hero-content');
+  var hero = document.querySelector('.hero');
+  var ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+      var p = Math.min(1, y / vh);
+      if (heroVideo) heroVideo.style.transform = 'scale(' + (1.08 + p * .06) + ') translateY(' + (p * 30) + 'px)';
+      if (heroContent) { heroContent.style.transform = 'translateY(' + (p * 40) + 'px)'; heroContent.style.opacity = String(1 - p * .9); }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+</script>
 </body>
 </html>
