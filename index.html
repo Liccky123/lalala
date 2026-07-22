@@ -84,147 +84,30 @@
     40%{ opacity:.14; }
     100%{ opacity:0; }
   }
-  /* shockwave rings — three staggered expanding rims for a layered blast-wave */
-  .hero-shock, .hero-shock2, .hero-shock3{
-    position:absolute; z-index:2; left:50%; top:50%; border-radius:50%; pointer-events:none; opacity:0;
+  /* turbulent fireball cluster — many small, irregular (non-symmetric) smoke/fire
+     blobs packed near the base and drifting upward at slightly different speeds,
+     like real photographed pyrotechnics: chaotic and lumpy, not clean geometry.
+     Individual blobs are created by JS (randomized size/shape/drift per blob) and
+     use the shared .hero-cluster rules + is-fire/is-smoke color variants below. */
+  .hero-cluster{
+    position:absolute; z-index:2; left:50%; pointer-events:none; opacity:0;
+    filter:blur(1.8px);
   }
-  .hero-shock{
-    width:36vmax; height:36vmax; margin:-18vmax 0 0 -18vmax;
-    border:5px solid rgba(255,170,80,.85);
-    box-shadow:0 0 50px 14px rgba(255,120,50,.45);
+  .hero-cluster.is-smoke{
+    background:radial-gradient(circle at 50% 55%,
+      rgba(64,52,44,.92) 0%, rgba(38,29,23,.88) 45%,
+      rgba(19,13,10,.68) 74%, transparent 92%);
   }
-  .hero-shock.go{ animation:shockRing 1s cubic-bezier(.1,.7,.25,1) forwards; }
-  @keyframes shockRing{
-    0%{ opacity:.95; transform:scale(.15); border-width:10px; }
-    100%{ opacity:0; transform:scale(3.4); border-width:0px; }
-  }
-  .hero-shock2{
-    width:30vmax; height:30vmax; margin:-15vmax 0 0 -15vmax;
-    border:3px solid rgba(255,205,150,.7);
-  }
-  .hero-shock2.go{ animation:shockRing2 1.7s cubic-bezier(.1,.7,.25,1) .16s forwards; }
-  @keyframes shockRing2{
-    0%{ opacity:.8; transform:scale(.2); }
-    100%{ opacity:0; transform:scale(5); }
-  }
-  .hero-shock3{
-    width:24vmax; height:24vmax; margin:-12vmax 0 0 -12vmax;
-    border:2px solid rgba(255,230,195,.55);
-  }
-  .hero-shock3.go{ animation:shockRing3 2.3s cubic-bezier(.1,.7,.25,1) .34s forwards; }
-  @keyframes shockRing3{
-    0%{ opacity:.7; transform:scale(.15); }
-    100%{ opacity:0; transform:scale(6.6); }
-  }
-  /* flame tongues — jagged, flickering fire blobs thrown out from the blast center */
-  .hero-flame{
-    position:absolute; z-index:2; left:50%; top:50%;
-    width:13vmax; height:22vmax; margin:-11vmax 0 0 -6.5vmax;
-    pointer-events:none; opacity:0; mix-blend-mode:screen; filter:blur(1.5px);
-    background:radial-gradient(ellipse 62% 82% at 50% 80%,
-      rgba(255,250,215,.98) 0%, rgba(255,185,60,.95) 24%,
-      rgba(235,85,20,.82) 48%, rgba(150,25,10,.4) 70%, transparent 86%);
-    border-radius:50% 50% 46% 46% / 68% 68% 32% 32%;
-  }
-  .hero-flame.go{ animation:flameBurst 1.2s cubic-bezier(.15,.7,.25,1) forwards; }
-  @keyframes flameBurst{
-    0%{ opacity:0; transform:translate(0,0) scale(.28) rotate(var(--fr0,0deg)); }
-    6%{ opacity:1; }
-    15%{ opacity:.5; }
-    23%{ opacity:1; }
-    32%{ opacity:.45; }
-    42%{ opacity:.9; }
-    58%{ opacity:.35; }
-    100%{ opacity:0; transform:translate(var(--fx),var(--fy)) scale(var(--fs,1.3)) rotate(var(--fr,30deg)); }
-  }
-  /* dark billowing smoke — wreathes around/above the fireball, cauliflower-textured,
-     with a faint warm rim-light where the fire glows through it from behind. */
-  .hero-smoke, .hero-smoke2, .hero-smoke3, .hero-smoke4{
-    position:absolute; z-index:2; bottom:30%; pointer-events:none; opacity:0; filter:blur(3px);
-    border-radius:54% 46% 44% 48% / 58% 64% 38% 40%;
-    background:
-      radial-gradient(circle at 50% 78%, rgba(255,135,45,.25), transparent 34%),
-      radial-gradient(circle at 50% 52%, rgba(58,44,35,.94) 0%, rgba(36,27,21,.9) 50%, rgba(20,14,11,.75) 76%, transparent 92%);
-  }
-  .hero-smoke{ left:47%; width:68vmax; height:54vmax; margin-left:-34vmax; }
-  .hero-smoke2{ left:27%; width:44vmax; height:36vmax; margin-left:-22vmax; }
-  .hero-smoke3{ left:71%; width:46vmax; height:37vmax; margin-left:-23vmax; }
-  .hero-smoke4{ left:50%; width:34vmax; height:29vmax; margin-left:-17vmax; bottom:46%; }
-  .hero-smoke.go{ animation:smokeRise 3.6s cubic-bezier(.2,.7,.3,1) .3s forwards; }
-  .hero-smoke2.go{ animation:smokeRise2 3.4s cubic-bezier(.2,.7,.3,1) .4s forwards; }
-  .hero-smoke3.go{ animation:smokeRise3 3.5s cubic-bezier(.2,.7,.3,1) .46s forwards; }
-  .hero-smoke4.go{ animation:smokeRise4 3.3s cubic-bezier(.2,.7,.3,1) .55s forwards; }
-  @keyframes smokeRise{
-    0%{ opacity:0; transform:translateY(9vmax) scale(.3); }
-    24%{ opacity:.9; }
-    60%{ opacity:.68; transform:translateY(-20vmax) scale(1.4); }
-    100%{ opacity:0; transform:translateY(-38vmax) scale(1.85); }
-  }
-  @keyframes smokeRise2{
-    0%{ opacity:0; transform:translateY(8vmax) scale(.28); }
-    26%{ opacity:.8; }
-    60%{ opacity:.6; transform:translateY(-17vmax) scale(1.3); }
-    100%{ opacity:0; transform:translateY(-32vmax) scale(1.7); }
-  }
-  @keyframes smokeRise3{
-    0%{ opacity:0; transform:translateY(8.5vmax) scale(.26); }
-    26%{ opacity:.78; }
-    60%{ opacity:.58; transform:translateY(-18vmax) scale(1.32); }
-    100%{ opacity:0; transform:translateY(-33vmax) scale(1.72); }
-  }
-  @keyframes smokeRise4{
-    0%{ opacity:0; transform:translateY(7vmax) scale(.24); }
-    24%{ opacity:.7; }
-    58%{ opacity:.5; transform:translateY(-15vmax) scale(1.25); }
-    100%{ opacity:0; transform:translateY(-28vmax) scale(1.6); }
-  }
-  /* mushroom fireball — a rising, billowing column of FIRE (not smoke) that blooms
-     into the classic mushroom-cap silhouette: the signature "big explosion" image. */
-  .hero-stem{
-    position:absolute; z-index:2; left:50%; bottom:14%;
-    width:10vmax; height:28vmax; margin-left:-5vmax;
-    pointer-events:none; opacity:0; filter:blur(2.5px);
-    background:linear-gradient(0deg,
-      rgba(255,240,190,.85), rgba(255,140,50,.65) 40%,
-      rgba(210,55,20,.4) 72%, transparent 100%);
-    border-radius:50% 50% 14% 14% / 26% 26% 8% 8%;
-  }
-  .hero-stem.go{ animation:stemRise 2.8s cubic-bezier(.2,.7,.3,1) .2s forwards; }
-  @keyframes stemRise{
-    0%{ opacity:0; transform:scaleY(.22); }
-    28%{ opacity:.85; }
-    100%{ opacity:0; transform:scaleY(1.6) translateY(-8vmax); }
-  }
-  .hero-mushroom, .hero-mushroom2, .hero-mushroom3{
-    position:absolute; z-index:2; bottom:32%; pointer-events:none; opacity:0; filter:blur(2.5px);
-    border-radius:50% 50% 42% 42% / 62% 62% 38% 38%;
+  .hero-cluster.is-fire{
+    mix-blend-mode:screen;
     background:radial-gradient(circle at 50% 58%,
-      rgba(255,246,205,.98) 0%, rgba(255,160,55,.85) 26%,
-      rgba(232,75,20,.65) 48%, rgba(130,28,12,.32) 70%, transparent 85%);
+      rgba(255,230,170,.96) 0%, rgba(255,150,55,.88) 30%,
+      rgba(215,65,20,.6) 58%, transparent 82%);
   }
-  .hero-mushroom{ left:50%; width:42vmax; height:34vmax; margin-left:-21vmax; }
-  .hero-mushroom2{ left:38%; width:22vmax; height:18vmax; margin-left:-11vmax; }
-  .hero-mushroom3{ left:63%; width:20vmax; height:17vmax; margin-left:-10vmax; }
-  .hero-mushroom.go{ animation:mushroomRise 3.3s cubic-bezier(.2,.7,.3,1) .26s forwards; }
-  .hero-mushroom2.go{ animation:mushroomRise2 3.1s cubic-bezier(.2,.7,.3,1) .4s forwards; }
-  .hero-mushroom3.go{ animation:mushroomRise3 3.2s cubic-bezier(.2,.7,.3,1) .48s forwards; }
-  @keyframes mushroomRise{
-    0%{ opacity:0; transform:translateY(9vmax) scale(.28); }
-    20%{ opacity:.98; }
-    55%{ opacity:.72; transform:translateY(-9vmax) scale(1.2); }
-    100%{ opacity:0; transform:translateY(-18vmax) scale(1.5); }
-  }
-  @keyframes mushroomRise2{
-    0%{ opacity:0; transform:translateY(7vmax) scale(.25); }
-    22%{ opacity:.85; }
-    55%{ opacity:.6; transform:translateY(-7vmax) scale(1.15); }
-    100%{ opacity:0; transform:translateY(-14vmax) scale(1.4); }
-  }
-  @keyframes mushroomRise3{
-    0%{ opacity:0; transform:translateY(8vmax) scale(.22); }
-    22%{ opacity:.8; }
-    55%{ opacity:.55; transform:translateY(-7.5vmax) scale(1.1); }
-    100%{ opacity:0; transform:translateY(-15vmax) scale(1.35); }
+  @keyframes clusterRise{
+    0%{ opacity:0; transform:translate(var(--cx0,0),var(--cy0,0)) scale(.22) rotate(var(--cr0,0deg)); }
+    9%{ opacity:var(--cop,.85); }
+    100%{ opacity:0; transform:translate(var(--cx1,0),var(--cy1,0)) scale(var(--cs,1.4)) rotate(var(--cr1,0deg)); }
   }
   /* impact rumble on the whole hero */
   @keyframes heroShake{
@@ -303,18 +186,7 @@
 <div class="hero">
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-nuke"></div>
-  <div class="hero-smoke"></div>
-  <div class="hero-smoke2"></div>
-  <div class="hero-smoke3"></div>
-  <div class="hero-smoke4"></div>
-  <div class="hero-mushroom"></div>
-  <div class="hero-mushroom2"></div>
-  <div class="hero-mushroom3"></div>
-  <div class="hero-stem"></div>
   <div class="hero-flash"></div>
-  <div class="hero-shock"></div>
-  <div class="hero-shock2"></div>
-  <div class="hero-shock3"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
     <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span><span class="ch">。</span></h1>
@@ -362,30 +234,49 @@
     document.querySelector('.hero-title').offsetWidth;
     requestAnimationFrame(function(){
       var hero = document.querySelector('.hero');
-      ['.hero-nuke', '.hero-flash', '.hero-shock', '.hero-shock2', '.hero-shock3',
-       '.hero-smoke', '.hero-smoke2', '.hero-smoke3', '.hero-smoke4',
-       '.hero-mushroom', '.hero-mushroom2', '.hero-mushroom3', '.hero-stem']
-        .forEach(function(sel){ var el = document.querySelector(sel); if (el) el.classList.add('go'); });
+      ['.hero-nuke', '.hero-flash'].forEach(function(sel){ var el = document.querySelector(sel); if (el) el.classList.add('go'); });
       if (hero){
         hero.classList.add('shake');
         setTimeout(function(){ hero.classList.remove('shake'); }, 650);
-        // flame tongues: thrown out radially with randomized angle/distance/spin so the
-        // blast reads as fire rather than a clean flash — each is disposable, self-removing.
-        var flameCount = 10;
-        for (var f = 0; f < flameCount; f++){
+        // turbulent cluster: many small irregular smoke/fire blobs, randomized size,
+        // shape, drift and timing so the blast billows chaotically like a real
+        // photographed explosion instead of a few clean symmetric shapes.
+        var clusterCount = 22;
+        for (var k = 0; k < clusterCount; k++){
           var el = document.createElement('div');
-          el.className = 'hero-flame';
-          var ang = (Math.PI * 2 / flameCount) * f + (Math.random() * 0.6 - 0.3);
-          var dist = spread * (0.2 + Math.random() * 0.22);
-          el.style.setProperty('--fx', (Math.cos(ang) * dist).toFixed(0) + 'px');
-          el.style.setProperty('--fy', (Math.sin(ang) * dist).toFixed(0) + 'px');
-          el.style.setProperty('--fr0', (Math.random() * 40 - 20) + 'deg');
-          el.style.setProperty('--fr', (Math.random() * 160 - 80) + 'deg');
-          el.style.setProperty('--fs', (1.05 + Math.random() * 0.65).toFixed(2));
-          el.style.animationDelay = (Math.random() * 0.1).toFixed(2) + 's';
+          var isFire = Math.random() < 0.32; // smoke-dominant, fire only shows through gaps
+          el.className = 'hero-cluster ' + (isFire ? 'is-fire' : 'is-smoke');
+          // start packed near the blast center, small random offset (not a perfect point)
+          var a0 = Math.random() * Math.PI * 2;
+          var d0 = spread * (Math.random() * 0.05);
+          el.style.setProperty('--cx0', (Math.cos(a0) * d0).toFixed(0) + 'px');
+          el.style.setProperty('--cy0', (Math.sin(a0) * d0).toFixed(0) + 'px');
+          // drift mostly upward with some random sideways wander (real smoke isn't symmetric)
+          var upBias = -Math.PI / 2;
+          var a1 = upBias + (Math.random() * 1.9 - 0.95);
+          var d1 = spread * (0.1 + Math.random() * 0.3);
+          el.style.setProperty('--cx1', (Math.cos(a1) * d1 * 0.5).toFixed(0) + 'px');
+          el.style.setProperty('--cy1', (Math.sin(a1) * d1).toFixed(0) + 'px');
+          el.style.setProperty('--cr0', (Math.random() * 30 - 15) + 'deg');
+          el.style.setProperty('--cr1', (Math.random() * 70 - 35) + 'deg');
+          el.style.setProperty('--cs', (1.15 + Math.random() * 0.55).toFixed(2));
+          el.style.setProperty('--cop', (isFire ? (0.7 + Math.random() * 0.25) : (0.75 + Math.random() * 0.2)).toFixed(2));
+          var size = isFire ? (7 + Math.random() * 11) : (12 + Math.random() * 22);
+          var asym = 0.7 + Math.random() * 0.5;
+          el.style.width = size.toFixed(1) + 'vmax';
+          el.style.height = (size * asym).toFixed(1) + 'vmax';
+          el.style.bottom = (14 + Math.random() * 14) + '%';
+          el.style.marginLeft = (-size / 2).toFixed(1) + 'vmax';
+          // irregular, non-symmetric lumpy silhouette — never a clean circle/ellipse
+          var r1 = 28 + Math.random() * 44, r2 = 28 + Math.random() * 44;
+          var r3 = 28 + Math.random() * 44, r4 = 28 + Math.random() * 44;
+          el.style.borderRadius = r1 + '% ' + (100 - r1) + '% ' + r2 + '% ' + (100 - r2) + '% / ' +
+                                   r3 + '% ' + r4 + '% ' + (100 - r4) + '% ' + (100 - r3) + '%';
+          var dur = (1.7 + Math.random() * 1.7).toFixed(2);
+          var del = (Math.random() * 0.55).toFixed(2);
+          el.style.animation = 'clusterRise ' + dur + 's cubic-bezier(.16,.7,.28,1) ' + del + 's forwards';
           hero.appendChild(el);
-          requestAnimationFrame(function(el){ return function(){ el.classList.add('go'); }; }(el));
-          setTimeout(function(el){ return function(){ if (el.parentNode) el.parentNode.removeChild(el); }; }(el), 2200);
+          setTimeout(function(el){ return function(){ if (el.parentNode) el.parentNode.removeChild(el); }; }(el), 4400);
         }
       }
       // PHASE 1 — violent scatter: fast, hot, overshoots size, spins hard
