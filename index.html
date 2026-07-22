@@ -51,25 +51,41 @@
     text-shadow:0 10px 60px rgba(0,0,0,.55);
   }
   /* each character is animated individually: it detonates from screen center,
-     overshoots its final spot while spinning, then settles. Default (no-JS)
-     state is the finished title, fully visible in place — motion is a JS bonus. */
+     scatters wide and violently, then flies back to settle in its true spot.
+     Default (no-JS) state is the finished title, fully visible in place —
+     motion is a JS bonus. */
   .hero-title .ch{ display:inline-block; will-change:transform, opacity; }
   .hero-title .hit{ color:var(--brass); }
 
-  /* explosion flash — a bright burst at the viewport center behind the title */
+  /* explosion flash — a hot, violent burst at the viewport center behind the title */
   .hero-flash{
     position:absolute; z-index:2; left:50%; top:50%;
-    width:130vmax; height:130vmax; margin:-65vmax 0 0 -65vmax;
+    width:145vmax; height:145vmax; margin:-72.5vmax 0 0 -72.5vmax;
     pointer-events:none; opacity:0; mix-blend-mode:screen;
     background:radial-gradient(circle,
-      rgba(255,252,244,1) 0%, rgba(255,238,205,.7) 7%,
-      rgba(227,180,99,.32) 17%, transparent 40%);
+      rgba(255,255,250,1) 0%, rgba(255,225,140,.95) 6%,
+      rgba(255,150,50,.62) 16%, rgba(219,58,20,.34) 27%,
+      rgba(120,20,10,.14) 38%, transparent 52%);
   }
-  .hero-flash.go{ animation:flashBurst 1.5s cubic-bezier(.1,.6,.25,1) forwards; }
+  .hero-flash.go{ animation:flashBurst 1.3s cubic-bezier(.06,.9,.2,1) forwards; }
   @keyframes flashBurst{
-    0%{ opacity:0; transform:scale(.1); }
-    12%{ opacity:1; }
-    100%{ opacity:0; transform:scale(2.6); }
+    0%{ opacity:0; transform:scale(.04); }
+    7%{ opacity:1; }
+    28%{ opacity:.92; }
+    100%{ opacity:0; transform:scale(3); }
+  }
+  /* shockwave ring — a fast expanding rim for extra violence */
+  .hero-shock{
+    position:absolute; z-index:2; left:50%; top:50%;
+    width:36vmax; height:36vmax; margin:-18vmax 0 0 -18vmax;
+    border-radius:50%; pointer-events:none; opacity:0;
+    border:5px solid rgba(255,170,80,.85);
+    box-shadow:0 0 50px 14px rgba(255,120,50,.45);
+  }
+  .hero-shock.go{ animation:shockRing 1s cubic-bezier(.1,.7,.25,1) forwards; }
+  @keyframes shockRing{
+    0%{ opacity:.95; transform:scale(.15); border-width:10px; }
+    100%{ opacity:0; transform:scale(3.4); border-width:0px; }
   }
   .hero-sub{
     max-width:60ch; margin-top:20px; font-size:clamp(13.5px,1.7vw,16px); color:#d8dedb;
@@ -139,6 +155,7 @@
 <div class="hero">
   <video src="video1.mp4" autoplay muted loop playsinline></video>
   <div class="hero-flash"></div>
+  <div class="hero-shock"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">ECHO43HD — 生物形態トポロジー最適化タワー</div>
     <h1 class="hero-title"><span class="ch hit">渋</span><span class="ch hit">谷</span><br><span class="ch">か</span><span class="ch">ら</span><span class="ch">生</span><span class="ch">成</span><span class="ch">。</span></h1>
@@ -151,42 +168,60 @@
 /* Title detonation: run synchronously right after the hero so the collapsed
    "everything at center" state is applied before first paint (no flash of the
    finished title). All characters are packed into the viewport center, tiny +
-   spun + invisible, then detonate outward together — overshooting their final
-   spots while unspinning — as a flash bursts behind them. If anything here
-   throws, the title is already in its correct, fully-visible position via CSS. */
+   spun + invisible, then BLAST outward to scattered, semi-random points across
+   the screen (violent, fast) — hang for a beat — then fly back and settle into
+   their true spots (slower, smooth). If anything here throws, the title is
+   already in its correct, fully-visible position via CSS. */
 (function(){
   try{
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var chars = document.querySelectorAll('.hero-title .ch');
     if (!chars.length) return;
     var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    var spread = Math.max(window.innerWidth, window.innerHeight);
     var data = [];
     chars.forEach(function(ch){
       var r = ch.getBoundingClientRect();
+      var ang = Math.random() * Math.PI * 2;
+      var dist = spread * (0.32 + Math.random() * 0.4); // scattered wide, often off-screen
       data.push({
         dx: cx - (r.left + r.width/2),
         dy: cy - (r.top + r.height/2),
-        rot: Math.random() * 90 - 45   // random initial spin, resolves to 0
+        sx: Math.cos(ang) * dist,
+        sy: Math.sin(ang) * dist,
+        spin1: (220 + Math.random() * 380) * (Math.random() < 0.5 ? -1 : 1),
+        rot0: Math.random() * 90 - 45
       });
     });
     chars.forEach(function(ch, i){
       var d = data[i];
       ch.style.transition = 'none';
       ch.style.opacity = '0';
-      ch.style.transform = 'translate(' + d.dx + 'px,' + d.dy + 'px) scale(.035) rotate(' + d.rot + 'deg)';
+      ch.style.transform = 'translate(' + d.dx + 'px,' + d.dy + 'px) scale(.02) rotate(' + d.rot0 + 'deg)';
     });
     // force a reflow so the collapsed start state is committed before detonation
     document.querySelector('.hero-title').offsetWidth;
     requestAnimationFrame(function(){
       var flash = document.querySelector('.hero-flash');
+      var shock = document.querySelector('.hero-shock');
       if (flash) flash.classList.add('go');
+      if (shock) shock.classList.add('go');
+      // PHASE 1 — violent scatter: fast, hot, overshoots size, spins hard
       chars.forEach(function(ch, i){
-        var delay = i * 0.07; // wider stagger — the blast visibly sweeps across the glyphs
-        // overshoot easing (y2 > 1): each glyph blasts past its spot, then settles slowly
-        ch.style.transition = 'transform 2.1s cubic-bezier(.14,1.55,.3,1) ' + delay + 's, opacity .5s ease ' + delay + 's';
-        ch.style.transform = 'translate(0,0) scale(1) rotate(0deg)';
+        var d = data[i];
+        var delay = i * 0.03;
+        ch.style.transition = 'transform .68s cubic-bezier(.05,.9,.15,1) ' + delay + 's, opacity .18s ease ' + delay + 's';
+        ch.style.transform = 'translate(' + d.sx + 'px,' + d.sy + 'px) scale(1.4) rotate(' + d.spin1 + 'deg)';
         ch.style.opacity = '1';
       });
+      // PHASE 2 — after hanging in the scatter for a beat, fly back and settle
+      setTimeout(function(){
+        chars.forEach(function(ch, i){
+          var delay2 = i * 0.05;
+          ch.style.transition = 'transform 1.5s cubic-bezier(.16,1.35,.3,1) ' + delay2 + 's';
+          ch.style.transform = 'translate(0,0) scale(1) rotate(0deg)';
+        });
+      }, 780);
     });
   }catch(e){ /* leave the title in its default visible position */ }
 })();
